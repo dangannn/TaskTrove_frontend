@@ -3,6 +3,7 @@ import axios from 'axios'
 import { Link } from 'react-router-dom'
 
 import customerId from '../../services/customerId'
+import removeIcon from '../../assets/images/remove-icon.svg'
 
 const FavoriteList = () => {
   const [favoriteList, setFavoriteList] = useState([null])
@@ -54,11 +55,21 @@ const FavoriteList = () => {
   const projectsList = favoriteList
     ? favoriteList.map((item) => (
         <>
-          <li className="mx-2 max-w-sm rounded-3xl border-2 border-blue-200 p-4 shadow-lg shadow-blue-200 sm:mx-auto">
-            <h3 className="text-xl text-[#4E64F9]">{`${item?.first_name} ${item?.last_name}`}</h3>
-            <Link to={`/freelancers/${item?.id}`}>Подробнее</Link>
-            <button className="border-2" onClick={removeFromFavoriteList.bind(null, item?.id)}>
-              Удалить из избранного
+          <li className="w-xl mx-2 flex max-w-md items-center justify-between gap-2 rounded-3xl border-2 border-blue-200 p-4 shadow-lg shadow-blue-200 sm:mx-auto">
+            <div>
+              <h3 className="text-xl text-[#4E64F9]">{`${item?.first_name} ${item?.last_name}`}</h3>
+              <Link
+                className="ease w-fit border-b-2 text-sm text-[#BDBDBD] duration-300 hover:border-b-[#246BFD] hover:text-[#246BFD]"
+                to={`/freelancers/${item?.id}`}
+              >
+                Подробнее
+              </Link>
+            </div>
+            <button
+              className="ease w-fit rounded-lg duration-300 hover:bg-red-400 active:bg-red-400/60 "
+              onClick={removeFromFavoriteList.bind(null, item?.id)}
+            >
+              <img alt="удалить фрилансера из избранного" className="w-8" src={removeIcon} />
             </button>
           </li>
         </>
@@ -67,7 +78,9 @@ const FavoriteList = () => {
 
   return (
     <section>
-      <ul className="mx-auto flex w-fit flex-col gap-10 text-black">{projectsList}</ul>
+      <ul className="mx-auto flex w-fit flex-col gap-10 text-black">
+        {projectsList.length > 0 ? projectsList : <li>список пуст</li>}
+      </ul>
     </section>
   )
 }

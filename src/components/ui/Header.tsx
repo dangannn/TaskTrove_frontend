@@ -26,7 +26,7 @@ const Header = () => {
         <Link className="mr-10 text-lg font-bold text-[#292D32]" to="/">
           TaskTrove
         </Link>
-        <div className="flex w-56 flex-row justify-between rounded-lg bg-white p-2 sm:w-full sm:max-w-sm md:max-w-md lg:max-w-lg">
+        <div className="flex w-96 flex-row justify-between rounded-lg bg-white p-2 sm:w-full sm:max-w-sm md:max-w-md lg:max-w-2xl">
           <Link
             className="border-2 border-transparent text-center text-xs text-[#292D32] duration-150 ease-in hover:border-b-2 hover:border-b-[#783EFD]/40 sm:w-40 sm:text-base"
             to="/freelancers"

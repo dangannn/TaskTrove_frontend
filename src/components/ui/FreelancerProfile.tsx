@@ -3,6 +3,8 @@ import axios from 'axios'
 import { useParams } from 'react-router-dom'
 
 import customerId from '../../services/customerId'
+import smileIcon from '../../assets/images/smile.svg'
+import sadIcon from '../../assets/images/sad.svg'
 
 import Button from './Button'
 import Input from './Input'
@@ -26,16 +28,23 @@ const FreelancerProfile = () => {
     freelancer: [id]
   })
 
-  const [isChecked, setIsChecked] = useState(false)
+  const [isCheckedPositive, setIsCheckedPositive] = useState(false)
+  const [isCheckedNegative, setIsCheckedNegative] = useState(false)
   const handleCommentFormChange = (e: { target: { name: any; value: any } }) => {
     setFormCommentData({ ...formCommentData, [e.target.name]: e.target.value })
   }
   const handleRequestFormChange = (e: { target: { name: any; value: any } }) => {
     setFormRequestData({ ...formRequestData, [e.target.name]: e.target.value })
   }
-  const handleCommentChangeBoolean = (e: { target: { name: any; value: any } }) => {
-    setIsChecked(e.target.checked)
-    setFormCommentData({ ...formCommentData, [e.target.name]: Boolean(e.target.checked) })
+  const handleCommentChangeBoolean = (value, e) => {
+    setFormCommentData({ ...formCommentData, [e.target.name]: Boolean(value) })
+    if (value) {
+      setIsCheckedPositive(true)
+      setIsCheckedNegative(false)
+    } else {
+      setIsCheckedPositive(false)
+      setIsCheckedNegative(true)
+    }
   }
 
   const addCommentUrl = 'http://127.0.0.1:8000/api/comments/'
@@ -138,7 +147,10 @@ const FreelancerProfile = () => {
         'такого фрилансера нет'
       )}
 
-      <form action="" className="border-2">
+      <form
+        action=""
+        className="mx-auto mb-4 flex flex-col gap-1 rounded-xl bg-white p-4 drop-shadow-xl sm:max-w-sm md:max-w-lg md:p-10"
+      >
         <fieldset>Отправить запрос</fieldset>
         <label className="text-black" htmlFor="name">
           Название:
@@ -165,7 +177,10 @@ const FreelancerProfile = () => {
         </Button>
       </form>
 
-      <form action="" className="border-2">
+      <form
+        action=""
+        className="mx-auto mb-4 flex flex-col gap-1 rounded-xl bg-white p-4 drop-shadow-xl sm:max-w-sm md:max-w-lg md:p-10"
+      >
         <fieldset>Оставить комментарий</fieldset>
         <label className="text-black" htmlFor="description">
           Текст:
@@ -177,22 +192,44 @@ const FreelancerProfile = () => {
           value={formCommentData.description}
           onChange={handleCommentFormChange}
         />
-        <label className="text-black" htmlFor="is_positive">
-          Эмоция:
-        </label>
-        <Input
-          checked={isChecked}
-          id="is_positive"
-          name="is_positive"
-          type="checkbox"
-          onChange={handleCommentChangeBoolean}
-        />
+        <div className="flex items-center justify-evenly">
+          <label className="text-black" htmlFor="is_positive_true">
+            <input
+              checked={isCheckedPositive}
+              className="absolute h-12 w-12 rounded-xl opacity-0"
+              id="is_positive_true"
+              name="is_positive"
+              type="checkbox"
+              onChange={handleCommentChangeBoolean.bind(null, true)}
+            />
+            <img
+              alt="позитивный комментарий"
+              className={`${isCheckedPositive ? 'w-12 rounded-xl bg-green-100 p-2' : 'w-12 p-2'}`}
+              src={smileIcon}
+            />
+          </label>
+          <label className="text-black" htmlFor="is_positive_false">
+            <input
+              checked={isCheckedNegative}
+              className="absolute h-12 w-12 rounded-xl opacity-0"
+              id="is_positive_false"
+              name="is_positive"
+              type="checkbox"
+              onChange={handleCommentChangeBoolean.bind(null, false)}
+            />
+            <img
+              alt="негативный комментарий"
+              className={`${isCheckedNegative ? 'w-12 rounded-xl bg-red-400 p-2' : 'w-12 p-2'}`}
+              src={sadIcon}
+            />
+          </label>
+        </div>
         <Button onClick={handleSubmit.bind(null, addCommentUrl, formCommentData)}>
           Добавить комментарий
         </Button>
       </form>
       <ul className="width-full mx-auto flex w-fit flex-col gap-10 text-black">
-        Список постов:
+        Список комментариве:
         {projectsList}
       </ul>
     </div>

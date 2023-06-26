@@ -3,6 +3,7 @@ import axios from 'axios'
 import { Link } from 'react-router-dom'
 
 import customerId from '../../services/customerId'
+import addIcon from '../../assets/images/add-icon.svg'
 
 const FreelancersList = () => {
   const [freelancers, setFreelancers] = useState([null])
@@ -55,11 +56,21 @@ const FreelancersList = () => {
     ? freelancers.map((item) => (
         <>
           <li className="mx-2 max-w-sm rounded-3xl border-2 border-blue-200 p-4 shadow-lg shadow-blue-200 sm:mx-auto">
-            <form action="">
-              <h3 className="text-xl text-[#4E64F9]">{`${item?.first_name} ${item?.last_name}`}</h3>
-              <Link to={`/freelancers/${item?.id}`}>Подробнее</Link>
-              <button className="border-2" onClick={addToFavoriteList.bind(null, item?.id)}>
-                Добавить в избранное
+            <form action="" className="flex items-center justify-between gap-2">
+              <div>
+                <h3 className="text-xl text-[#4E64F9]">{`${item?.first_name} ${item?.last_name}`}</h3>
+                <Link
+                  className="ease w-fit border-b-2 text-sm text-[#BDBDBD] duration-300 hover:border-b-[#246BFD] hover:text-[#246BFD]"
+                  to={`/freelancers/${item?.id}`}
+                >
+                  Подробнее
+                </Link>
+              </div>
+              <button
+                className="ease w-fit rounded-lg duration-300 hover:bg-yellow-400 active:bg-yellow-400/60 "
+                onClick={addToFavoriteList.bind(null, item?.id)}
+              >
+                <img alt="добавить фриласнера в избранное" className="w-8" src={addIcon} />
               </button>
             </form>
           </li>

@@ -55,25 +55,28 @@ const ProjectsList = () => {
     ? projects.map((item) => (
         <li
           key={item?.id}
-          className="mx-2 max-w-sm rounded-3xl border-2 border-blue-200 p-4 shadow-lg shadow-blue-200 sm:mx-auto"
+          className="md:w-3xl mx-auto mb-4 items-start rounded-xl bg-white p-4 drop-shadow-xl sm:mx-auto md:max-w-3xl"
         >
           <h3 className="text-xl text-[#4E64F9]">{item?.name}</h3>
           <span className="text-sm text-[#BDBDBD]">
             {new Date(item?.pub_date).toDateString('ru')}
           </span>
           <p className="text-base text-[#686868]">{item?.description}</p>
-          <button onClick={createRequest.bind(null, item?.id)}>Откликнуться</button>
+          <button
+            className="mx-auto mt-4 rounded-md border-2 bg-[#246BFD] p-2 text-white duration-300 ease-linear hover:bg-[#246BFD]/80 focus:border-black focus:outline-0 active:bg-[#246BFD]/60 active:shadow-blue-900"
+            onClick={createRequest.bind(null, item?.id)}
+          >
+            Откликнуться
+          </button>
         </li>
       ))
     : 'нет проектов'
 
   return (
-    <>
-      <ul className="mx-auto flex w-fit flex-col gap-10 text-black">
-        Список постов:
-        {projectsList}
-      </ul>
-    </>
+    <section className="mx-auto max-w-2xl">
+      <span className="mx-auto w-fit text-center font-bold">Список проектов:</span>
+      <ul className="mx-auto flex w-fit flex-col gap-10 text-black">{projectsList}</ul>
+    </section>
   )
 }
 

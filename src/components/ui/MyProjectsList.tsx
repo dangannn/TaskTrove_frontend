@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import axios from 'axios'
 
 import customerId from '../../services/customerId'
+import trashIcon from '../../assets/images/trashIcon.svg'
 
 import Input from './Input'
 import Button from './Button'
@@ -91,13 +92,26 @@ const MyProjectsList = () => {
   const projectsList = projects
     ? projects.map((item) => (
         <>
-          <li className="mx-2 max-w-sm rounded-3xl border-2 border-blue-200 p-4 shadow-lg shadow-blue-200 sm:mx-auto">
-            <h3 className="text-xl text-[#4E64F9]">{item?.name}</h3>
-            <p className="text-base text-[#4E64F9]">{item?.description}</p>
-            <button className="border-2" onClick={removeFromFavoriteList.bind(null, item?.id)}>
-              Удалить проект
+          <li className="md:w-3xl mx-auto mb-4 flex items-start justify-between rounded-xl bg-white p-4 drop-shadow-xl sm:mx-auto md:max-w-3xl">
+            <div className="max-w-md">
+              <h3 className="text-xl text-[#4E64F9]">{item?.name}</h3>
+              <span className="text-sm text-[#BDBDBD]">
+                {new Date(item?.pub_date).toDateString('ru')}
+              </span>
+              <p className="text-base text-[#686868]">{item?.description}</p>
+              <Link
+                className="ease w-fit border-b-2 text-sm text-[#BDBDBD] duration-300 hover:border-b-[#246BFD] hover:text-[#246BFD]"
+                to={`/project_details/${item?.id}`}
+              >
+                Отклики
+              </Link>
+            </div>
+            <button
+              className="ease w-fit rounded-lg duration-300 hover:bg-red-400 active:bg-red-400/60 "
+              onClick={removeFromFavoriteList.bind(null, item?.id)}
+            >
+              <img alt="удалить проект" className="w-8 p-1" src={trashIcon} />
             </button>
-            <Link to={`/project_details/${item?.id}`}>Отклики</Link>
           </li>
         </>
       ))
@@ -105,8 +119,11 @@ const MyProjectsList = () => {
 
   return (
     <>
-      <form action="" className="mx-auto max-w-sm border-2">
-        <fieldset>Оставить комментарий</fieldset>
+      <form
+        action=""
+        className="mx-auto mb-4 flex flex-col gap-1 rounded-xl bg-white p-4 drop-shadow-xl sm:max-w-sm md:max-w-lg md:p-10"
+      >
+        <fieldset>Создать проект</fieldset>
         <label className="text-black" htmlFor="description">
           Название:
         </label>

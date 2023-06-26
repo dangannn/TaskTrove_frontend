@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { Link } from 'react-router-dom'
 
 import customerId from '../../services/customerId'
 
@@ -47,15 +46,18 @@ const MyRequests = () => {
         // Обработка ошибки
         console.error('Ошибка вывода постов:', error)
       })
-  }, [])
+  }, [projects])
   const projectsList = projects
     ? projects.map((item) => (
         <>
-          <li className="mx-2 max-w-sm rounded-3xl border-2 border-blue-200 p-4 shadow-lg shadow-blue-200 sm:mx-auto">
+          <li className="md:w-3xl mx-auto mb-4 items-start rounded-xl bg-white p-4 drop-shadow-xl sm:mx-auto md:max-w-3xl">
             <h3 className="text-xl text-[#4E64F9]">{item?.name}</h3>
-            <span className="text-sm text-[#4E64F9]">Заказчик: {item?.customer}</span>
-            <p className="text-base text-[#4E64F9]">{item?.description}</p>
-            <button className="border-2" onClick={declineRequest.bind(null, item?.id)}>
+            <span className="text-sm text-[#BDBDBD]">Заказчик: {item?.customer}</span>
+            <p className="text-base text-black">{item?.description}</p>
+            <button
+              className="mx-auto mt-4 rounded-md border-2 bg-[#246BFD] p-2 text-white duration-300 ease-linear hover:bg-[#246BFD]/80 focus:border-black focus:outline-0 active:bg-[#246BFD]/60 active:shadow-blue-900"
+              onClick={declineRequest.bind(null, item?.id)}
+            >
               Отказаться
             </button>
           </li>
