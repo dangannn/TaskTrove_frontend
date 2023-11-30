@@ -1,13 +1,19 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 
 import customerId from '../../services/customerId'
 import addIcon from '../../assets/images/add-icon.svg'
+import axiosInstance from '../../services/axiosInstance'
+import Freelancer from '../../types/freelancer'
+
+import Pagination from './Pagination'
 
 const FreelancersList = () => {
-  const [freelancers, setFreelancers] = useState([null])
-  const addToFavoriteList = (id, event) => {
+  const [freelancers, setFreelancers] = useState<Freelancer[]>([])
+  const [next, setNext] = useState('')
+  const [prev, setPrev] = useState('')
+  const addToFavoriteList = (id: number, event: any) => {
     event.preventDefault()
     event.stopPropagation()
 
@@ -32,28 +38,47 @@ const FreelancersList = () => {
         console.error('Ошибка вывода постов:', error)
       })
   }
-
-  useEffect(() => {
-    axios({
-      method: 'get',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      url: 'http://127.0.0.1:8000/api/freelancers/',
-      responseType: 'json'
-    })
+  const setData = (url: string) => {
+    console.log(url)
+    axiosInstance
+      .get(url)
       .then((response) => {
-        setFreelancers(response.data)
+        setFreelancers(response.data.results)
+        if (response.data.next != null) {
+          setNext(response.data.next.slice(26))
+        }
+        if (response.data.previous != null) {
+          setPrev(response.data.previous.slice(26))
+        }
 
         return response
       })
       .catch((error) => {
-        console.error('Ошибка вывода постов:', error)
+        console.error('Ошибка вывода фрилансеров:', error)
       })
-  }, [freelancers])
+  }
 
-  const projectsList = freelancers
-    ? freelancers.map((item) => (
+  useEffect(() => {
+    axiosInstance
+      .get('/freelancers/')
+      .then((response) => {
+        setFreelancers(response.data.results)
+        if (response.data.next != null) {
+          setNext(response.data.next.slice(26))
+        }
+        if (response.data.previous != null) {
+          setPrev(response.data.previous.slice(26))
+        }
+
+        return response
+      })
+      .catch((error) => {
+        console.error('Ошибка вывода фрилансеров:', error)
+      })
+  }, [])
+
+  const freelancersList = freelancers
+    ? freelancers.map((item: Freelancer) => (
         <>
           <li className="mx-2 max-w-sm rounded-3xl border-2 border-blue-200 p-4 shadow-lg shadow-blue-200 sm:mx-auto">
             <form action="" className="flex items-center justify-between gap-2">
@@ -79,10 +104,13 @@ const FreelancersList = () => {
     : 'нет проектов'
 
   return (
-    <ul className="mx-auto  flex w-fit flex-col gap-10 text-black">
-      Список фрилансеров:
-      {projectsList}
-    </ul>
+    <>
+      <ul className="mx-auto flex w-fit flex-col gap-10 text-black">
+        Список фрилансеров:
+        {freelancersList}
+      </ul>
+      <Pagination next={next} prev={prev} setData={setData} />
+    </>
   )
 }
 

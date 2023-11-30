@@ -5,12 +5,13 @@ import { useParams } from 'react-router-dom'
 import customerId from '../../services/customerId'
 import smileIcon from '../../assets/images/smile.svg'
 import sadIcon from '../../assets/images/sad.svg'
+import Freelancer from '../../types/freelancer'
 
 import Button from './Button'
 import Input from './Input'
 
 const FreelancerProfile = () => {
-  const [freelancer, setFreelancer] = useState([null])
+  const [freelancer, setFreelancer] = useState<Freelancer[]>([])
   const [comments, setComments] = useState([null])
   const { id } = useParams()
 
@@ -49,7 +50,7 @@ const FreelancerProfile = () => {
 
   const addCommentUrl = 'http://127.0.0.1:8000/api/comments/'
   const addRequestUrl = 'http://127.0.0.1:8000/api/requests/'
-  const handleSubmit = (url, data, event) => {
+  const handleSubmit = (url: string, data, event) => {
     event.preventDefault()
     event.stopPropagation()
     console.log(data)

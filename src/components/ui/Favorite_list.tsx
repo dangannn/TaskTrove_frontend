@@ -7,7 +7,7 @@ import removeIcon from '../../assets/images/remove-icon.svg'
 
 const FavoriteList = () => {
   const [favoriteList, setFavoriteList] = useState([null])
-  const removeFromFavoriteList = (id, event) => {
+  const removeFromFavoriteList = (id: number, event: any) => {
     event.preventDefault()
     event.stopPropagation()
 

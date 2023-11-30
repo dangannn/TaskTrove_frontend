@@ -49,7 +49,7 @@ const ProjectsList = () => {
         console.error('Ошибка вывода постов:', error)
       })
     console.log(projects)
-  }, [projects])
+  }, [])
 
   const projectsList = projects
     ? projects.map((item) => (

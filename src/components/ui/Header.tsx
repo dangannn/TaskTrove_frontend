@@ -22,11 +22,11 @@ const Header = () => {
     py-5
     "
     >
-      <div className=" m-auto flex h-14 max-w-7xl flex-row items-center justify-evenly px-3">
+      <div className=" m-auto flex h-14 sm:flex-row md:max-w-7xl md:flex-row md:items-center md:justify-evenly md:px-3">
         <Link className="mr-10 text-lg font-bold text-[#292D32]" to="/">
           TaskTrove
         </Link>
-        <div className="flex w-96 flex-row justify-between rounded-lg bg-white p-2 sm:w-full sm:max-w-sm md:max-w-md lg:max-w-2xl">
+        <div className="flex w-96 flex-col justify-between rounded-lg bg-white p-2 sm:w-full sm:max-w-sm sm:flex-row md:max-w-md lg:max-w-2xl">
           <Link
             className="border-2 border-transparent text-center text-xs text-[#292D32] duration-150 ease-in hover:border-b-2 hover:border-b-[#783EFD]/40 sm:w-40 sm:text-base"
             to="/freelancers"
