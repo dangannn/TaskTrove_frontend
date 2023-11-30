@@ -39,16 +39,21 @@ const FreelancersList = () => {
       })
   }
   const setData = (url: string) => {
-    console.log(url)
+    console.log('next', next)
+    console.log('prev', prev)
     axiosInstance
       .get(url)
       .then((response) => {
         setFreelancers(response.data.results)
         if (response.data.next != null) {
           setNext(response.data.next.slice(26))
+        } else {
+          setNext('')
         }
         if (response.data.previous != null) {
           setPrev(response.data.previous.slice(26))
+        } else {
+          setPrev('')
         }
 
         return response
@@ -105,7 +110,7 @@ const FreelancersList = () => {
 
   return (
     <>
-      <ul className="mx-auto flex w-fit flex-col gap-10 text-black">
+      <ul className="mx-auto mb-5 flex w-fit flex-col gap-10 text-black">
         Список фрилансеров:
         {freelancersList}
       </ul>
