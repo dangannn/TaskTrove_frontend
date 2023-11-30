@@ -1,52 +1,14 @@
 <div id="top"></div>
-
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
-
-<p align="center">
-  <a href="https://github.com/Drumpy/vrttv-boilerplate/stargazers">
-    <img src="https://img.shields.io/github/stars/Drumpy/vrttv-boilerplate.svg?style=for-the-badge" />
-  </a>
-  <a href="https://github.com/Drumpy/vrttv-boilerplate/issues">
-    <img src="https://img.shields.io/github/issues/Drumpy/vrttv-boilerplate.svg?style=for-the-badge" />
-  </a>
-</p>
-
-<!-- PROJECT LOGO -->
 <div align="center">
-  <a href="#">
-    <img src="https://i.ibb.co/mqPXzct/VRTTV-Banner.png" alt="VRTTV Banner">
-  </a>
 
-  <h2 align="center">VRTTV Boilerplate</h2>
+  <h2 align="center">TaskTrove - frontend</h2>
   <p align="center">
-    Avoid setting up a project from scratch. Start using VRTTV 🎉
+    Freelance Exchange Platform
     <br />
-    <br />
-    <a href="https://vrttv-boilerplate.vercel.app/">View Demo</a>
-    ·
-    <a href="https://github.com/Drumpy/vrttv-boilerplate/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/Drumpy/vrttv-boilerplate/issues">Request Feature</a>
   </p>
 </div>
 
 <!-- ABOUT THE PROJECT -->
-
-# 🤔 What’s this?
-
-Are you tired of always creating the same structure from scratch for your projects? Me too. 🥱
-
-This is my _go-to_ when I start a new project on front-end development.
-
-If you found it useful somehow, I would be grateful if you could leave a star in the project's GitHub repository 💚
-
-<p align="right">(<a href="#top">back to top</a>)</p>
 
 # 🔮 What’s inside?
 
@@ -227,19 +189,3 @@ Use this table as a reference when writing commits. Husky will be in charge of c
 - 🔗 Deploy to Vercel
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
-<!-- CONTACT -->
-
-# 📧 Contact
-
-Diego Do Santos - ddosantos@hotmail.com
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-
-[contributors-shield]: https://img.shields.io/github/contributors/Drumpy/vite-boilerplate.svg?style=for-the-badge
-[contributors-url]: https://github.com/Drumpy/vrttv-boilerplate/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/Drumpy/vrttv-boilerplate.svg?style=for-the-badge
-[product-screenshot]: https://i.ibb.co/zf7gjMR/Card-Outline.png
