@@ -4,12 +4,13 @@ import axios from 'axios'
 
 import customerId from '../../services/customerId'
 import trashIcon from '../../assets/images/trashIcon.svg'
+import Project from '../../types/project'
 
 import Input from './Input'
 import Button from './Button'
 
 const MyProjectsList = () => {
-  const [projects, setProjects] = useState([null])
+  const [projects, setProjects] = useState<Project[]>([])
 
   const [formData, setFormData] = useState({
     description: '',
@@ -17,7 +18,7 @@ const MyProjectsList = () => {
     name: ''
   })
 
-  const removeFromFavoriteList = (id, event) => {
+  const removeFromFavoriteList = (id: number, event: any) => {
     event.preventDefault()
     event.stopPropagation()
 
@@ -96,7 +97,7 @@ const MyProjectsList = () => {
             <div className="max-w-md">
               <h3 className="text-xl text-[#4E64F9]">{item?.name}</h3>
               <span className="text-sm text-[#BDBDBD]">
-                {new Date(item?.pub_date).toDateString('ru')}
+                {new Date(item?.pub_date).toLocaleString('ru-RU')}
               </span>
               <p className="text-base text-[#686868]">{item?.description}</p>
               <Link

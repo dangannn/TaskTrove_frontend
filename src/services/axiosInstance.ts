@@ -6,7 +6,8 @@ const axiosInstance = axios.create({
   // withCredentials: true, // Включение отправки кук с запросами
   headers: {
     'Content-Type': 'application/json' // Тип контента по умолчанию
-  }
+  },
+  responseType: 'json'
 })
 
 export default axiosInstance

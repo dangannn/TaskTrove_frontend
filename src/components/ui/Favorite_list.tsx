@@ -4,9 +4,11 @@ import { Link } from 'react-router-dom'
 
 import customerId from '../../services/customerId'
 import removeIcon from '../../assets/images/remove-icon.svg'
+import axiosInstance from '../../services/axiosInstance'
+import Freelancer from '../../types/freelancer'
 
 const FavoriteList = () => {
-  const [favoriteList, setFavoriteList] = useState([null])
+  const [favoriteList, setFavoriteList] = useState<Freelancer[]>([])
   const removeFromFavoriteList = (id: number, event: any) => {
     event.preventDefault()
     event.stopPropagation()
@@ -32,17 +34,10 @@ const FavoriteList = () => {
         console.error('Ошибка вывода постов:', error)
       })
   }
-  const requestTmpFavoriteList = `http://127.0.0.1:8000/api/favorite_lists/${customerId}/favorite_list/`
 
   useEffect(() => {
-    axios({
-      method: 'get',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      url: requestTmpFavoriteList,
-      responseType: 'json'
-    })
+    axiosInstance
+      .get(`/favorite_lists/${customerId}/favorite_list/`)
       .then((response) => {
         setFavoriteList(response.data)
 
@@ -51,7 +46,8 @@ const FavoriteList = () => {
       .catch((error) => {
         console.error('Ошибка вывода постов:', error)
       })
-  }, [favoriteList, requestTmpFavoriteList])
+  }, [])
+
   const projectsList = favoriteList
     ? favoriteList.map((item) => (
         <>

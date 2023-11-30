@@ -1,6 +1,8 @@
 import { Route, Routes } from 'react-router-dom'
 import axios from 'axios'
 
+import axiosInstance from '../services/axiosInstance'
+
 import AuthForm from './ui/AuthForm'
 import ProjectsList from './ProjectsList'
 import Header from './ui/Header'
@@ -23,10 +25,12 @@ function hasJWT() {
   return flag
 }
 
-const setAuthToken = (token) => {
+const setAuthToken = (token: string) => {
   if (token) {
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-  } else delete axios.defaults.headers.common['Authorization']
+    axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`
+  } else delete axiosInstance.defaults.headers.common['Authorization']
+  // } else delete axios.defaults.headers.common['Authorization']
 }
 
 const token = localStorage.getItem('token')

@@ -13,6 +13,30 @@ const FreelancersList = () => {
   const [freelancers, setFreelancers] = useState<Freelancer[]>([])
   const [next, setNext] = useState('')
   const [prev, setPrev] = useState('')
+
+  const setData = (url: string) => {
+    axiosInstance
+      .get(url)
+      .then((response) => {
+        setFreelancers(response.data.results)
+        if (response.data.next != null) {
+          setNext(response.data.next.slice(26))
+        } else {
+          setNext('')
+        }
+        if (response.data.previous != null) {
+          setPrev(response.data.previous.slice(26))
+        } else {
+          setPrev('')
+        }
+
+        return response
+      })
+      .catch((error) => {
+        console.error('Ошибка вывода фрилансеров:', error)
+      })
+  }
+
   const addToFavoriteList = (id: number, event: any) => {
     event.preventDefault()
     event.stopPropagation()
@@ -36,30 +60,6 @@ const FreelancersList = () => {
       })
       .catch((error) => {
         console.error('Ошибка вывода постов:', error)
-      })
-  }
-  const setData = (url: string) => {
-    console.log('next', next)
-    console.log('prev', prev)
-    axiosInstance
-      .get(url)
-      .then((response) => {
-        setFreelancers(response.data.results)
-        if (response.data.next != null) {
-          setNext(response.data.next.slice(26))
-        } else {
-          setNext('')
-        }
-        if (response.data.previous != null) {
-          setPrev(response.data.previous.slice(26))
-        } else {
-          setPrev('')
-        }
-
-        return response
-      })
-      .catch((error) => {
-        console.error('Ошибка вывода фрилансеров:', error)
       })
   }
 
