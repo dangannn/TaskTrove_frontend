@@ -47,12 +47,12 @@ const CustomerProfile = () => {
             <span className="font-bold">Почта:</span> {customer?.email}
           </span>
           <span className="text-base text-black">
-            <span className="font-bold">Номер телефона:</span>
+            <span className="font-bold">Номер телефона: </span>
             {customer?.phone_number}
           </span>
         </div>
       ) : (
-        'такого фрилансера нет'
+        'нет данных'
       )}
     </section>
   )

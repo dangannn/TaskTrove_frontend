@@ -4,18 +4,20 @@ import axios from 'axios'
 
 import customerId from '../../services/customerId'
 import trashIcon from '../../assets/images/trashIcon.svg'
-import Project from '../../types/project'
+import IProject from '../../types/project'
 
 import Input from './Input'
 import Button from './Button'
 
 const MyProjectsList = () => {
-  const [projects, setProjects] = useState<Project[]>([])
+  const [projects, setProjects] = useState<IProject[]>([])
 
   const [formData, setFormData] = useState({
     description: '',
     customer: customerId,
-    name: ''
+    name: '',
+    urgency: '',
+    payment: 0
   })
 
   const removeFromFavoriteList = (id: number, event: any) => {
@@ -40,12 +42,16 @@ const MyProjectsList = () => {
       })
   }
   const handleChange = (e: { target: { name: any; value: any } }) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
+    if (e.target.name != 'payment') {
+      setFormData({ ...formData, [e.target.name]: e.target.value })
+    } else {
+      setFormData({ ...formData, [e.target.name]: Number(e.target.value) })
+    }
   }
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault()
-
+    console.log(formData)
     axios({
       method: 'post',
       headers: {
@@ -99,12 +105,11 @@ const MyProjectsList = () => {
               <span className="text-sm text-[#BDBDBD]">
                 {new Date(item?.pub_date).toLocaleString('ru-RU')}
               </span>
-              <p className="text-base text-[#686868]">{item?.description}</p>
               <Link
                 className="ease w-fit border-b-2 text-sm text-[#BDBDBD] duration-300 hover:border-b-[#246BFD] hover:text-[#246BFD]"
                 to={`/project_details/${item?.id}`}
               >
-                Отклики
+                Подробнее
               </Link>
             </div>
             <button
@@ -137,6 +142,26 @@ const MyProjectsList = () => {
           name="description"
           type="text"
           value={formData.description}
+          onChange={handleChange}
+        />
+        <label className="text-black" htmlFor="urgency">
+          Срочность:
+        </label>
+        <Input
+          id="urgency"
+          name="urgency"
+          type="date"
+          value={formData.urgency}
+          onChange={handleChange}
+        />
+        <label className="text-black" htmlFor="payment">
+          Оплата:
+        </label>
+        <Input
+          id="payment"
+          name="payment"
+          type="number"
+          value={formData.payment}
           onChange={handleChange}
         />
         <Button onClick={handleSubmit}>Добавить проект</Button>
