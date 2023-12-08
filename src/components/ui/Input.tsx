@@ -2,7 +2,7 @@ interface InputProps {
   id: string
   type: string
   name: string
-  value?: string
+  value?: string | number
   checked?: boolean
   onChange: (e: { target: { name: any; value: any } }) => void
 }
