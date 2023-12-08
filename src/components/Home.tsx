@@ -4,7 +4,6 @@ import axiosInstance from '../services/axiosInstance'
 import IProject from '../types/project'
 
 import Project from './ui/Project'
-import Pagination from './ui/Pagination'
 
 const Home = () => {
   const [bestWeekProjects, setBestWeekProjects] = useState<IProject[]>([])

@@ -1,7 +1,19 @@
-import { Route, Routes } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import axios from 'axios'
 
 import axiosInstance from '../services/axiosInstance'
+import {
+  AUTH_ROUTE,
+  CUSTOMER_PROFILE_ROUTE,
+  FAVORITE_LIST_ROUTE,
+  FREELANCER_PROFILE_ROUTE,
+  FREELANCERS_ROUTE,
+  MY_PROJECTS_ROUTE,
+  MY_REQUESTS_ROUTE,
+  PROJECT_DETAILS_ROUTE,
+  PROJECTS_ROUTE,
+  REGISTER_ROUTE
+} from '../services/routes'
 
 import AuthForm from './ui/AuthForm'
 import ProjectsList from './ProjectsList'
@@ -15,22 +27,108 @@ import FavoriteList from './ui/Favorite_list'
 import MyProjectsList from './ui/MyProjectsList'
 import ProjectDetails from './ui/ProjectDetails'
 import MyRequests from './ui/MyRequests'
+import PrivateRoute from './ui/PrivateRoute'
+import ErrorPage from './ui/ErrorPage'
 
-function hasJWT() {
-  let flag = false
-
-  //check user has JWT token
-  localStorage.getItem('token') ? (flag = true) : (flag = false)
-
-  return flag
-}
+export const router = createBrowserRouter([
+  {
+    path: '/',
+    element: (
+      <PrivateRoute>
+        <Header />
+      </PrivateRoute>
+    ),
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: '/',
+        element: (
+          <PrivateRoute>
+            <Home />,
+          </PrivateRoute>
+        )
+      },
+      {
+        path: CUSTOMER_PROFILE_ROUTE,
+        element: (
+          <PrivateRoute>
+            <CustomerProfile />,
+          </PrivateRoute>
+        )
+      },
+      {
+        path: PROJECTS_ROUTE,
+        element: (
+          <PrivateRoute>
+            <ProjectsList />,
+          </PrivateRoute>
+        )
+      },
+      {
+        path: FREELANCERS_ROUTE,
+        element: (
+          <PrivateRoute>
+            <FreelancersList />,
+          </PrivateRoute>
+        )
+      },
+      {
+        path: FREELANCER_PROFILE_ROUTE,
+        element: (
+          <PrivateRoute>
+            <FreelancerProfile />,
+          </PrivateRoute>
+        )
+      },
+      {
+        path: FAVORITE_LIST_ROUTE,
+        element: (
+          <PrivateRoute>
+            <FavoriteList />,
+          </PrivateRoute>
+        )
+      },
+      {
+        path: MY_PROJECTS_ROUTE,
+        element: (
+          <PrivateRoute>
+            <MyProjectsList />,
+          </PrivateRoute>
+        )
+      },
+      {
+        path: MY_REQUESTS_ROUTE,
+        element: (
+          <PrivateRoute>
+            <MyRequests />,
+          </PrivateRoute>
+        )
+      },
+      {
+        path: PROJECT_DETAILS_ROUTE,
+        element: (
+          <PrivateRoute>
+            <ProjectDetails />,
+          </PrivateRoute>
+        )
+      }
+    ]
+  },
+  {
+    path: AUTH_ROUTE,
+    element: <AuthForm />
+  },
+  {
+    path: REGISTER_ROUTE,
+    element: <RegisterForm />
+  }
+])
 
 const setAuthToken = (token: string) => {
   if (token) {
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
     axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`
   } else delete axiosInstance.defaults.headers.common['Authorization']
-  // } else delete axios.defaults.headers.common['Authorization']
 }
 
 const token = localStorage.getItem('token')
@@ -40,33 +138,7 @@ if (token) {
 }
 
 function App() {
-  return (
-    <main className="">
-      <section className="">
-        {hasJWT() ? <Header /> : ''}
-        <Routes>
-          {hasJWT() ? (
-            <>
-              <Route element={<Home />} path="/" />
-              <Route element={<ProjectsList />} path="/projects" />
-              <Route element={<FreelancersList />} path="/freelancers" />
-              <Route element={<FreelancerProfile />} path="/freelancers/:id" />
-              <Route element={<CustomerProfile />} path="/profile" />
-              <Route element={<FavoriteList />} path="/favorite_list" />
-              <Route element={<MyProjectsList />} path="/my_projects" />
-              <Route element={<MyRequests />} path="/my_requests" />
-              <Route element={<ProjectDetails />} path="/project_details/:id" />
-            </>
-          ) : (
-            <>
-              <Route element={<AuthForm />} path="*" />
-              <Route element={<RegisterForm />} path="/register" />
-            </>
-          )}
-        </Routes>
-      </section>
-    </main>
-  )
+  return <RouterProvider fallbackElement={<p>Loading...</p>} router={router} />
 }
 
 export default App

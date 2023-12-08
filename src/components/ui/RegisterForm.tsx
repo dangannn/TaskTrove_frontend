@@ -1,6 +1,8 @@
-import React, { useReducer, useState } from 'react'
+import React, { useState } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
+
+import { AUTH_ROUTE } from '../../services/routes'
 
 import Input from './Input'
 
@@ -39,7 +41,7 @@ const FormComponent = () => {
       .then((response) => response.data)
       .then((data) => {
         console.log(data)
-        window.location.href = '/auth'
+        window.location.href = AUTH_ROUTE
 
         return data
       })
@@ -116,7 +118,7 @@ const FormComponent = () => {
           value={formData.password}
           onChange={handleChange}
         />
-        <Link className="text-black" to="/auth">
+        <Link className="text-black" to={AUTH_ROUTE}>
           Уже есть аккаунт?
         </Link>
         <button
