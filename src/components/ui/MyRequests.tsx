@@ -46,7 +46,7 @@ const MyRequests = () => {
         // Обработка ошибки
         console.error('Ошибка вывода постов:', error)
       })
-  }, [projects])
+  }, [])
   const projectsList = projects
     ? projects.map((item) => (
         <>

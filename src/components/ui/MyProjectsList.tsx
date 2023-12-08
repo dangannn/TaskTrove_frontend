@@ -91,7 +91,6 @@ const MyProjectsList = () => {
         return response
       })
       .catch((error) => {
-        // Обработка ошибки
         console.error('Ошибка вывода постов:', error)
       })
     console.log(projects)

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import customerId from '../services/customerId'
 import axiosInstance from '../services/axiosInstance'
@@ -6,12 +6,14 @@ import IProject from '../types/project'
 
 import Pagination from './ui/Pagination'
 import Project from './ui/Project'
+import Input from './ui/Input'
 
 const ProjectsList = () => {
   const [projects, setProjects] = useState<IProject[]>([])
   const [next, setNext] = useState('')
   const [prev, setPrev] = useState('')
   const [filter, setFilter] = useState('')
+  const [search, setSearch] = useState('')
 
   const setData = (url: string) => {
     axiosInstance
@@ -38,6 +40,9 @@ const ProjectsList = () => {
   const handleChangeList = (e: { target: { name: any; value: any } }) => {
     setFilter(String([e.target.value]))
   }
+  const handleSearch = (e: { target: { name: any; value: any } }) => {
+    setSearch(String([e.target.value]))
+  }
   const createRequest = (id: number, event: any) => {
     event.preventDefault()
     event.stopPropagation()
@@ -57,8 +62,8 @@ const ProjectsList = () => {
   }
 
   useEffect(() => {
-    setData(`/projects/?ordering=${filter}`)
-  }, [filter])
+    setData(`/projects/?ordering=${filter}&search=${search}`)
+  }, [filter, search])
 
   const projectsList =
     projects.length > 0
@@ -76,8 +81,12 @@ const ProjectsList = () => {
 
   return (
     <section className="mx-auto max-w-2xl">
-      <div className="flex justify-between">
-        <span className="w-fit text-center font-bold">Список проектов:</span>
+      <h2 className="w-fit text-center font-bold">Список проектов:</h2>
+      <div className="flex flex-col justify-between gap-1">
+        <label className="hidden text-black" htmlFor="search">
+          Искать:
+        </label>
+        <Input id="search" name="search" type="search" value={search} onChange={handleSearch} />
         <div>
           <label className="text-black" htmlFor="filter">
             Сортировать по:
