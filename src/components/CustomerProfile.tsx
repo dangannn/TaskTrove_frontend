@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 
-import customerId from '../../services/customerId'
-import User from '../../types/user'
+import customerId from '../services/customerId'
+import User from '../types/user'
 
 const CustomerProfile = () => {
   const [customer, setCustomer] = useState<User>()

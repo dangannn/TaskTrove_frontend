@@ -1,3 +1,4 @@
+export const ROOT_ROUTE = '/'
 export const CUSTOMER_PROFILE_ROUTE = '/profile'
 export const PROJECTS_ROUTE = '/projects'
 export const FREELANCERS_ROUTE = '/freelancers'

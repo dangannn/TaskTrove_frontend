@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 
-import customerId from '../../services/customerId'
-import addIcon from '../../assets/images/add-icon.svg'
-import axiosInstance from '../../services/axiosInstance'
-import Freelancer from '../../types/freelancer'
+import customerId from '../services/customerId'
+import addIcon from '../assets/images/add-icon.svg'
+import axiosInstance from '../services/axiosInstance'
+import Freelancer from '../types/freelancer'
 
-import Pagination from './Pagination'
+import Pagination from './ui/Pagination'
 
 const FreelancersList = () => {
   const [freelancers, setFreelancers] = useState<Freelancer[]>([])

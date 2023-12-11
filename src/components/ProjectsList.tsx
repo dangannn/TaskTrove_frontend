@@ -8,6 +8,10 @@ import Pagination from './ui/Pagination'
 import Project from './ui/Project'
 import Input from './ui/Input'
 
+interface SearchProps {
+  background?: string
+}
+
 const ProjectsList = () => {
   const [projects, setProjects] = useState<IProject[]>([])
   const [next, setNext] = useState('')
@@ -62,6 +66,7 @@ const ProjectsList = () => {
   }
 
   useEffect(() => {
+    console.log(123)
     setData(`/projects/?ordering=${filter}&search=${search}`)
   }, [filter, search])
 

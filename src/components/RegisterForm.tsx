@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 
-import { AUTH_ROUTE } from '../../services/routes'
+import { AUTH_ROUTE } from '../services/routes'
 
-import Input from './Input'
+import Input from './ui/Input'
 
 const FormComponent = () => {
   const [formData, setFormData] = useState({

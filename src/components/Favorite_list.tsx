@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 
-import customerId from '../../services/customerId'
-import removeIcon from '../../assets/images/remove-icon.svg'
-import axiosInstance from '../../services/axiosInstance'
-import Freelancer from '../../types/freelancer'
+import customerId from '../services/customerId'
+import removeIcon from '../assets/images/remove-icon.svg'
+import axiosInstance from '../services/axiosInstance'
+import Freelancer from '../types/freelancer'
 
 const FavoriteList = () => {
   const [favoriteList, setFavoriteList] = useState<Freelancer[]>([])

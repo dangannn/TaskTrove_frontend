@@ -10,6 +10,8 @@ interface IPaginationProps {
 }
 
 const Pagination = ({ prev, next, setData }: IPaginationProps) => {
+  console.log(next, prev)
+
   return (
     <div className="mx-auto flex w-fit">
       <button

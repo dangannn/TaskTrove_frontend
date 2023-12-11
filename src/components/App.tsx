@@ -12,27 +12,28 @@ import {
   MY_REQUESTS_ROUTE,
   PROJECT_DETAILS_ROUTE,
   PROJECTS_ROUTE,
-  REGISTER_ROUTE
+  REGISTER_ROUTE,
+  ROOT_ROUTE
 } from '../services/routes'
 
 import AuthForm from './ui/AuthForm'
 import ProjectsList from './ProjectsList'
 import Header from './ui/Header'
-import RegisterForm from './ui/RegisterForm'
-import FreelancersList from './ui/FreelancersList'
+import RegisterForm from './RegisterForm'
+import FreelancersList from './FreelancersList'
 import Home from './Home'
-import FreelancerProfile from './ui/FreelancerProfile'
-import CustomerProfile from './ui/CustomerProfile'
-import FavoriteList from './ui/Favorite_list'
-import MyProjectsList from './ui/MyProjectsList'
-import ProjectDetails from './ui/ProjectDetails'
-import MyRequests from './ui/MyRequests'
+import FreelancerProfile from './FreelancerProfile'
+import CustomerProfile from './CustomerProfile'
+import FavoriteList from './Favorite_list'
+import MyProjectsList from './MyProjectsList'
+import ProjectDetails from './ProjectDetails'
+import MyRequests from './MyRequests'
 import PrivateRoute from './ui/PrivateRoute'
 import ErrorPage from './ui/ErrorPage'
 
 export const router = createBrowserRouter([
   {
-    path: '/',
+    path: ROOT_ROUTE,
     element: (
       <PrivateRoute>
         <Header />
@@ -41,7 +42,7 @@ export const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
-        path: '/',
+        path: ROOT_ROUTE,
         element: (
           <PrivateRoute>
             <Home />,

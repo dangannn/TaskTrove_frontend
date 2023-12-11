@@ -11,7 +11,8 @@ import {
   FREELANCERS_ROUTE,
   MY_PROJECTS_ROUTE,
   MY_REQUESTS_ROUTE,
-  PROJECTS_ROUTE
+  PROJECTS_ROUTE,
+  ROOT_ROUTE
 } from '../../services/routes'
 
 const Header = () => {
@@ -39,7 +40,7 @@ const Header = () => {
     "
       >
         <nav className="flex w-full flex-wrap items-center justify-between bg-[#EFF3FD] p-4">
-          <Link className="text-lg font-bold text-[#292D32]" to="/">
+          <Link className="text-lg font-bold text-[#292D32]" to={ROOT_ROUTE}>
             TaskTrove
           </Link>
           <img

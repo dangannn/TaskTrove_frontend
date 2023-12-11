@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 
-import customerId from '../../services/customerId'
+import customerId from '../services/customerId'
 
 const MyRequests = () => {
   const [projects, setProjects] = useState([null])
