@@ -45,7 +45,7 @@ export const router = createBrowserRouter([
         path: ROOT_ROUTE,
         element: (
           <PrivateRoute>
-            <Home />,
+            <Home />
           </PrivateRoute>
         )
       },
@@ -53,7 +53,7 @@ export const router = createBrowserRouter([
         path: CUSTOMER_PROFILE_ROUTE,
         element: (
           <PrivateRoute>
-            <CustomerProfile />,
+            <CustomerProfile />
           </PrivateRoute>
         )
       },
@@ -61,7 +61,7 @@ export const router = createBrowserRouter([
         path: PROJECTS_ROUTE,
         element: (
           <PrivateRoute>
-            <ProjectsList />,
+            <ProjectsList />
           </PrivateRoute>
         )
       },
@@ -69,7 +69,7 @@ export const router = createBrowserRouter([
         path: FREELANCERS_ROUTE,
         element: (
           <PrivateRoute>
-            <FreelancersList />,
+            <FreelancersList />
           </PrivateRoute>
         )
       },
@@ -77,7 +77,7 @@ export const router = createBrowserRouter([
         path: FREELANCER_PROFILE_ROUTE,
         element: (
           <PrivateRoute>
-            <FreelancerProfile />,
+            <FreelancerProfile />
           </PrivateRoute>
         )
       },
@@ -85,7 +85,7 @@ export const router = createBrowserRouter([
         path: FAVORITE_LIST_ROUTE,
         element: (
           <PrivateRoute>
-            <FavoriteList />,
+            <FavoriteList />
           </PrivateRoute>
         )
       },
@@ -93,7 +93,7 @@ export const router = createBrowserRouter([
         path: MY_PROJECTS_ROUTE,
         element: (
           <PrivateRoute>
-            <MyProjectsList />,
+            <MyProjectsList />
           </PrivateRoute>
         )
       },
@@ -101,7 +101,7 @@ export const router = createBrowserRouter([
         path: MY_REQUESTS_ROUTE,
         element: (
           <PrivateRoute>
-            <MyRequests />,
+            <MyRequests />
           </PrivateRoute>
         )
       },
@@ -109,7 +109,7 @@ export const router = createBrowserRouter([
         path: PROJECT_DETAILS_ROUTE,
         element: (
           <PrivateRoute>
-            <ProjectDetails />,
+            <ProjectDetails />
           </PrivateRoute>
         )
       }
