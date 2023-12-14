@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useParams } from 'react-router-dom'
 
-import customerId from '../../services/customerId'
-import smileIcon from '../../assets/images/smile.svg'
-import sadIcon from '../../assets/images/sad.svg'
-import Freelancer from '../../types/freelancer'
+import customerId from '../services/customerId'
+import smileIcon from '../assets/images/smile.svg'
+import sadIcon from '../assets/images/sad.svg'
+import Freelancer from '../types/freelancer'
 
-import Button from './Button'
-import Input from './Input'
+import Button from './ui/Button'
+import Input from './ui/Input'
 
 const FreelancerProfile = () => {
   const [freelancer, setFreelancer] = useState<Freelancer[]>([])

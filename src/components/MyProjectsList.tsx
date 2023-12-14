@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 
-import customerId from '../../services/customerId'
-import trashIcon from '../../assets/images/trashIcon.svg'
-import IProject from '../../types/project'
+import customerId from '../services/customerId'
+import trashIcon from '../assets/images/trashIcon.svg'
+import IProject from '../types/project'
 
-import Input from './Input'
-import Button from './Button'
+import Input from './ui/Input'
+import Button from './ui/Button'
 
 const MyProjectsList = () => {
   const [projects, setProjects] = useState<IProject[]>([])
@@ -91,7 +91,6 @@ const MyProjectsList = () => {
         return response
       })
       .catch((error) => {
-        // Обработка ошибки
         console.error('Ошибка вывода постов:', error)
       })
     console.log(projects)

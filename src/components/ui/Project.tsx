@@ -5,7 +5,7 @@ import IProject from '../../types/project'
 interface IProjectProps {
   project: IProject | undefined
   key: number | undefined
-  children: any | undefined
+  children?: any | undefined
 }
 
 const Project = ({ project, children }: IProjectProps) => {

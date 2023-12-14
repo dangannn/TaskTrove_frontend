@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import customerId from '../services/customerId'
 import axiosInstance from '../services/axiosInstance'
@@ -6,37 +6,31 @@ import IProject from '../types/project'
 
 import Pagination from './ui/Pagination'
 import Project from './ui/Project'
+import Input from './ui/Input'
 
+const LIMIT_PROJECTS = 3
 const ProjectsList = () => {
   const [projects, setProjects] = useState<IProject[]>([])
-  const [next, setNext] = useState('')
-  const [prev, setPrev] = useState('')
+  const [totalCount, setTotalCount] = useState(0)
+  const [page, setPage] = useState(1)
   const [filter, setFilter] = useState('')
+  const [search, setSearch] = useState('')
 
-  const setData = (url: string) => {
-    axiosInstance
-      .get(url)
-      .then((response) => {
-        setProjects(response.data.results)
-        if (response.data.next != null) {
-          setNext(response.data.next.slice(26))
-        } else {
-          setNext('')
-        }
-        if (response.data.previous != null) {
-          setPrev(response.data.previous.slice(26))
-        } else {
-          setPrev('')
-        }
+  const getProjectsRequest = async (limit: number, offset: number) => {
+    const { data } = await axiosInstance.get(
+      `/projects/?ordering=${filter}&search=${search}&limit=${limit}&offset=${offset}`
+    )
 
-        return response
-      })
-      .catch((error) => {
-        console.error('Ошибка запроса проектов:', error)
-      })
+    if (data) {
+      setProjects(data.results)
+      setTotalCount(data.count)
+    }
   }
   const handleChangeList = (e: { target: { name: any; value: any } }) => {
     setFilter(String([e.target.value]))
+  }
+  const handleSearch = (e: { target: { name: any; value: any } }) => {
+    setSearch(String([e.target.value]))
   }
   const createRequest = (id: number, event: any) => {
     event.preventDefault()
@@ -57,8 +51,8 @@ const ProjectsList = () => {
   }
 
   useEffect(() => {
-    setData(`/projects/?ordering=${filter}`)
-  }, [filter])
+    getProjectsRequest(LIMIT_PROJECTS, (page - 1) * LIMIT_PROJECTS)
+  }, [page, filter, search])
 
   const projectsList =
     projects.length > 0
@@ -76,8 +70,12 @@ const ProjectsList = () => {
 
   return (
     <section className="mx-auto max-w-2xl">
-      <div className="flex justify-between">
-        <span className="w-fit text-center font-bold">Список проектов:</span>
+      <h2 className="w-fit text-center font-bold">Список проектов:</h2>
+      <div className="flex flex-col justify-between gap-1">
+        <label className="hidden text-black" htmlFor="search">
+          Искать:
+        </label>
+        <Input id="search" name="search" type="search" value={search} onChange={handleSearch} />
         <div>
           <label className="text-black" htmlFor="filter">
             Сортировать по:
@@ -102,7 +100,11 @@ const ProjectsList = () => {
         </div>
       </div>
       <ul className="mx-auto flex w-fit flex-col gap-10 text-black">{projectsList}</ul>
-      <Pagination next={next} prev={prev} setData={setData} />
+      <Pagination
+        currentPage={page}
+        setPage={setPage}
+        totalPage={Math.ceil(totalCount / LIMIT_PROJECTS)}
+      />
     </section>
   )
 }

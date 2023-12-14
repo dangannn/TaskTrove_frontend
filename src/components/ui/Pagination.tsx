@@ -4,35 +4,35 @@ import nextIcon from '../../assets/images/next-arrow.svg'
 import prevIcon from '../../assets/images/prev-arrow.svg'
 
 interface IPaginationProps {
-  prev: string
-  next: string
-  setData: any
+  setPage: React.Dispatch<React.SetStateAction<number>>
+  currentPage: number
+  totalPage: number
 }
 
-const Pagination = ({ prev, next, setData }: IPaginationProps) => {
+const Pagination = ({ setPage, currentPage, totalPage }: IPaginationProps) => {
   return (
     <div className="mx-auto flex w-fit">
       <button
         className={`ease w-fit rounded-lg duration-300 hover:bg-blue-200 active:bg-blue-200/60 ${
-          prev == '' ? 'invisible' : ''
+          currentPage == 1 ? 'invisible' : ''
         }`}
-        onClick={setData.bind(null, prev)}
+        onClick={() => setPage((prev) => prev - 1)}
       >
         <img
           alt="следующая странциа"
-          className={`w-8 ${prev == '' ? 'invisible' : ''}`}
+          className={`w-8 ${currentPage === 1 ? 'invisible' : ''}`}
           src={prevIcon}
         />
       </button>
       <button
         className={`ease w-fit rounded-lg duration-300 hover:bg-blue-200 active:bg-blue-200/60 ${
-          next == '' ? 'invisible' : ''
+          totalPage === currentPage ? 'invisible' : ''
         }`}
-        onClick={setData.bind(null, next)}
+        onClick={() => setPage((prev) => prev + 1)}
       >
         <img
           alt="следующая странциа"
-          className={`w-8 ${next == '' ? 'invisible' : ''}`}
+          className={`w-8 ${totalPage === currentPage ? 'invisible' : ''}`}
           src={nextIcon}
         />
       </button>

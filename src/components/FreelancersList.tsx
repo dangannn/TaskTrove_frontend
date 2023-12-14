@@ -2,40 +2,32 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 
-import customerId from '../../services/customerId'
-import addIcon from '../../assets/images/add-icon.svg'
-import axiosInstance from '../../services/axiosInstance'
-import Freelancer from '../../types/freelancer'
+import customerId from '../services/customerId'
+import addIcon from '../assets/images/add-icon.svg'
+import axiosInstance from '../services/axiosInstance'
+import Freelancer from '../types/freelancer'
 
-import Pagination from './Pagination'
+import Pagination from './ui/Pagination'
+
+const LIMIT_FREELANCERS = 3
 
 const FreelancersList = () => {
   const [freelancers, setFreelancers] = useState<Freelancer[]>([])
-  const [next, setNext] = useState('')
-  const [prev, setPrev] = useState('')
+  const [totalCount, setTotalCount] = useState(0)
+  const [page, setPage] = useState(1)
 
-  const setData = (url: string) => {
-    axiosInstance
-      .get(url)
-      .then((response) => {
-        setFreelancers(response.data.results)
-        if (response.data.next != null) {
-          setNext(response.data.next.slice(26))
-        } else {
-          setNext('')
-        }
-        if (response.data.previous != null) {
-          setPrev(response.data.previous.slice(26))
-        } else {
-          setPrev('')
-        }
+  const getFreelancersRequest = async (limit: number, offset: number) => {
+    const { data } = await axiosInstance.get(`/freelancers/?limit=${limit}&offset=${offset}`)
 
-        return response
-      })
-      .catch((error) => {
-        console.error('Ошибка вывода фрилансеров:', error)
-      })
+    if (data) {
+      setFreelancers(data.results)
+      setTotalCount(data.count)
+    }
   }
+
+  useEffect(() => {
+    getFreelancersRequest(LIMIT_FREELANCERS, (page - 1) * LIMIT_FREELANCERS)
+  }, [page])
 
   const addToFavoriteList = (id: number, event: any) => {
     event.preventDefault()
@@ -62,25 +54,6 @@ const FreelancersList = () => {
         console.error('Ошибка вывода постов:', error)
       })
   }
-
-  useEffect(() => {
-    axiosInstance
-      .get('/freelancers/')
-      .then((response) => {
-        setFreelancers(response.data.results)
-        if (response.data.next != null) {
-          setNext(response.data.next.slice(26))
-        }
-        if (response.data.previous != null) {
-          setPrev(response.data.previous.slice(26))
-        }
-
-        return response
-      })
-      .catch((error) => {
-        console.error('Ошибка вывода фрилансеров:', error)
-      })
-  }, [])
 
   const freelancersList = freelancers
     ? freelancers.map((item: Freelancer) => (
@@ -114,7 +87,11 @@ const FreelancersList = () => {
         Список фрилансеров:
         {freelancersList}
       </ul>
-      <Pagination next={next} prev={prev} setData={setData} />
+      <Pagination
+        currentPage={page}
+        setPage={setPage}
+        totalPage={Math.ceil(totalCount / LIMIT_FREELANCERS)}
+      />
     </>
   )
 }
