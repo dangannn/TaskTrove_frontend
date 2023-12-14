@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import styled from 'styled-components'
 
 import customerId from '../services/customerId'
 import axiosInstance from '../services/axiosInstance'
@@ -9,6 +10,20 @@ import Project from './ui/Project'
 import Input from './ui/Input'
 
 const LIMIT_PROJECTS = 3
+
+const Select = styled.select`
+  background-color: var(--bg-primary);
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  outline: none;
+`
+
+const Option = styled.option`
+  padding: 8px;
+`
 const ProjectsList = () => {
   const [projects, setProjects] = useState<IProject[]>([])
   const [totalCount, setTotalCount] = useState(0)
@@ -72,34 +87,22 @@ const ProjectsList = () => {
     <section className="mx-auto max-w-2xl">
       <h2 className="w-fit text-center font-bold">Список проектов:</h2>
       <div className="flex flex-col justify-between gap-1">
-        <label className="hidden text-black" htmlFor="search">
+        <label className="hidden" htmlFor="search">
           Искать:
         </label>
         <Input id="search" name="search" type="search" value={search} onChange={handleSearch} />
-        <div>
-          <label className="text-black" htmlFor="filter">
+        <div className="p-1">
+          <label className="" htmlFor="filter">
             Сортировать по:
           </label>
-          <select
-            className="text-black"
-            id="filter"
-            name="filter"
-            value={filter}
-            onChange={handleChangeList}
-          >
-            <option className="text-black" value="-pub_date">
-              По дате
-            </option>
-            <option className="text-black" value="-urgency">
-              По срочности
-            </option>
-            <option className="text-black" value="-payment">
-              По стоимости
-            </option>
-          </select>
+          <Select id="filter" name="filter" value={filter} onChange={handleChangeList}>
+            <Option value="-pub_date">По дате</Option>
+            <Option value="-urgency">По срочности</Option>
+            <Option value="-payment">По стоимости</Option>
+          </Select>
         </div>
       </div>
-      <ul className="mx-auto flex w-fit flex-col gap-10 text-black">{projectsList}</ul>
+      <ul className="mx-auto flex w-fit flex-col gap-10">{projectsList}</ul>
       <Pagination
         currentPage={page}
         setPage={setPage}

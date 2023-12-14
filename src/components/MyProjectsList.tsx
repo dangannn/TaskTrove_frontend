@@ -125,14 +125,14 @@ const MyProjectsList = () => {
     <>
       <form
         action=""
-        className="mx-auto mb-4 flex flex-col gap-1 rounded-xl bg-white p-4 drop-shadow-xl sm:max-w-sm md:max-w-lg md:p-10"
+        className="mx-auto mb-4 flex flex-col gap-1 rounded-xl border-2 border-blue-200 p-4 shadow-lg shadow-blue-200 sm:max-w-sm md:max-w-lg md:p-10"
       >
         <fieldset>Создать проект</fieldset>
-        <label className="text-black" htmlFor="description">
+        <label className="" htmlFor="description">
           Название:
         </label>
         <Input id="name" name="name" type="text" value={formData.name} onChange={handleChange} />
-        <label className="text-black" htmlFor="description">
+        <label className="" htmlFor="description">
           Описание:
         </label>
         <Input
@@ -142,7 +142,7 @@ const MyProjectsList = () => {
           value={formData.description}
           onChange={handleChange}
         />
-        <label className="text-black" htmlFor="urgency">
+        <label className="" htmlFor="urgency">
           Срочность:
         </label>
         <Input
@@ -152,7 +152,7 @@ const MyProjectsList = () => {
           value={formData.urgency}
           onChange={handleChange}
         />
-        <label className="text-black" htmlFor="payment">
+        <label className="" htmlFor="payment">
           Оплата:
         </label>
         <Input
@@ -164,7 +164,7 @@ const MyProjectsList = () => {
         />
         <Button onClick={handleSubmit}>Добавить проект</Button>
       </form>
-      <ul className="width-full mx-auto flex w-fit flex-col gap-10 text-black">
+      <ul className="width-full mx-auto flex w-fit flex-col gap-10 ">
         Список моих проектов:
         {projectsList}
       </ul>

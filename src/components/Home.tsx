@@ -6,11 +6,16 @@ import IProject from '../types/project'
 
 import Project from './ui/Project'
 
-const Section = styled.section``
+const Section = styled.section`
+  max-width: 64rem;
+  margin: 0 auto;
+  @media screen and (max-width: 640px) {
+    margin: 0 1rem;
+  }
+`
 
 const Title = styled.h2`
   text-align: center;
-  color: #333; /* Dark gray color */
   font-size: 2.4rem;
   font-weight: bold;
   margin-bottom: 10px;
@@ -23,10 +28,7 @@ const List = styled.ul`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   margin: auto;
-  //display: flex;
-  //flex-direction: column;
   gap: 10px;
-  color: black;
 
   @media screen and (max-width: 640px) {
     display: flex;

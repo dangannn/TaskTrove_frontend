@@ -15,6 +15,7 @@ import {
   REGISTER_ROUTE,
   ROOT_ROUTE
 } from '../services/routes'
+import GlobalStyles from '../global-styles'
 
 import AuthForm from './ui/AuthForm'
 import ProjectsList from './ProjectsList'
@@ -139,7 +140,11 @@ if (token) {
 }
 
 function App() {
-  return <RouterProvider fallbackElement={<p>Loading...</p>} router={router} />
+  return (
+    <>
+      <RouterProvider fallbackElement={<p>Loading...</p>} router={router} />
+    </>
+  )
 }
 
 export default App

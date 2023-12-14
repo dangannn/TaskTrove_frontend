@@ -56,8 +56,8 @@ const FormComponent = () => {
         className="drop-shadow-3xl mx-auto flex flex-col gap-1 rounded-xl bg-white p-4 text-white sm:max-w-sm md:max-w-3xl md:p-10"
         onSubmit={handleSubmit}
       >
-        <fieldset className="mx-auto font-bold text-black">Авторизация</fieldset>
-        <label className="text-black" htmlFor="first_name">
+        <fieldset className="mx-auto font-bold ">Авторизация</fieldset>
+        <label className="" htmlFor="first_name">
           Имя:
         </label>
         <Input
@@ -67,7 +67,7 @@ const FormComponent = () => {
           value={formData.first_name}
           onChange={handleChange}
         />
-        <label className="text-black" htmlFor="last_name">
+        <label className="" htmlFor="last_name">
           Фамилия:
         </label>
         <Input
@@ -77,11 +77,11 @@ const FormComponent = () => {
           value={formData.last_name}
           onChange={handleChange}
         />
-        <label className="text-black" htmlFor="email">
+        <label className="" htmlFor="email">
           Почта:
         </label>
         <Input id="email" name="email" type="text" value={formData.email} onChange={handleChange} />
-        <label className="text-black" htmlFor="username">
+        <label className="" htmlFor="username">
           Логин:
         </label>
         <Input
@@ -91,24 +91,24 @@ const FormComponent = () => {
           value={formData.username}
           onChange={handleChange}
         />
-        <label className="text-black" htmlFor="groups">
+        <label className="" htmlFor="groups">
           Работник:
         </label>
         <select
-          className="text-black"
+          className=""
           id="groups"
           name="groups"
           value={formData.groups}
           onChange={handleChangeList}
         >
-          <option className="text-black" value="1">
+          <option className="" value="1">
             Фрилансер
           </option>
-          <option className="text-black" value="2">
+          <option className="" value="2">
             Заказчик
           </option>
         </select>
-        <label className="text-black" htmlFor="password">
+        <label className="" htmlFor="password">
           Пароль:
         </label>
         <Input
@@ -118,7 +118,7 @@ const FormComponent = () => {
           value={formData.password}
           onChange={handleChange}
         />
-        <Link className="text-black" to={AUTH_ROUTE}>
+        <Link className="" to={AUTH_ROUTE}>
           Уже есть аккаунт?
         </Link>
         <button

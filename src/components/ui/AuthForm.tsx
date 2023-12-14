@@ -16,7 +16,7 @@ const FormComponent = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
-  const setAuthToken = (token) => {
+  const setAuthToken = (token: string) => {
     if (token) {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
     } else delete axios.defaults.headers.common['Authorization']
@@ -67,8 +67,8 @@ const FormComponent = () => {
         className="drop-shadow-3xl mx-auto flex flex-col gap-1 rounded-xl bg-white p-4 text-white sm:max-w-sm md:max-w-3xl md:p-10"
         onSubmit={handleSubmit}
       >
-        <fieldset className="mx-auto font-bold text-black">Авторизация</fieldset>
-        <label className="text-black" htmlFor="username">
+        <fieldset className="mx-auto font-bold ">Авторизация</fieldset>
+        <label className="" htmlFor="username">
           Логин:
         </label>
         <Input
@@ -78,7 +78,7 @@ const FormComponent = () => {
           value={formData.username}
           onChange={handleChange}
         />
-        <label className="text-black" htmlFor="password">
+        <label className="" htmlFor="password">
           Пароль:
         </label>
         <Input
@@ -88,7 +88,7 @@ const FormComponent = () => {
           value={formData.password}
           onChange={handleChange}
         />
-        <Link className="text-black" to="/register">
+        <Link className="" to="/register">
           Создать аккаунт?
         </Link>
         <button

@@ -133,16 +133,16 @@ const FreelancerProfile = () => {
     : 'нет проектов'
 
   return (
-    <div className="mx-auto flex w-fit flex-col gap-10 text-black">
+    <div className="mx-auto flex w-fit flex-col gap-10 ">
       {freelancer ? (
         <div
           className="mx-2 flex max-w-sm flex-col gap-2 rounded-3xl border-2 border-blue-200 p-4 shadow-lg shadow-blue-200
              sm:mx-auto"
         >
-          <span className="text-base text-black">Имя: {freelancer?.first_name}</span>
-          <span className="text-base text-black">Фамилия: {freelancer?.last_name}</span>
-          <span className="text-base text-black">Почта: {freelancer?.email}</span>
-          <span className="text-base text-black">Номер телефона: {freelancer?.phone_number}</span>
+          <span className="text-base ">Имя: {freelancer?.first_name}</span>
+          <span className="text-base ">Фамилия: {freelancer?.last_name}</span>
+          <span className="text-base ">Почта: {freelancer?.email}</span>
+          <span className="text-base ">Номер телефона: {freelancer?.phone_number}</span>
         </div>
       ) : (
         'такого фрилансера нет'
@@ -153,7 +153,7 @@ const FreelancerProfile = () => {
         className="mx-auto mb-4 flex flex-col gap-1 rounded-xl bg-white p-4 drop-shadow-xl sm:max-w-sm md:max-w-lg md:p-10"
       >
         <fieldset>Отправить запрос</fieldset>
-        <label className="text-black" htmlFor="name">
+        <label className="" htmlFor="name">
           Название:
         </label>
         <Input
@@ -163,7 +163,7 @@ const FreelancerProfile = () => {
           value={formRequestData.name}
           onChange={handleRequestFormChange}
         />
-        <label className="text-black" htmlFor="redescription">
+        <label className="" htmlFor="redescription">
           Описание:
         </label>
         <Input
@@ -183,7 +183,7 @@ const FreelancerProfile = () => {
         className="mx-auto mb-4 flex flex-col gap-1 rounded-xl bg-white p-4 drop-shadow-xl sm:max-w-sm md:max-w-lg md:p-10"
       >
         <fieldset>Оставить комментарий</fieldset>
-        <label className="text-black" htmlFor="description">
+        <label className="" htmlFor="description">
           Текст:
         </label>
         <Input
@@ -194,7 +194,7 @@ const FreelancerProfile = () => {
           onChange={handleCommentFormChange}
         />
         <div className="flex items-center justify-evenly">
-          <label className="text-black" htmlFor="is_positive_true">
+          <label className="" htmlFor="is_positive_true">
             <input
               checked={isCheckedPositive}
               className="absolute h-12 w-12 rounded-xl opacity-0"
@@ -209,7 +209,7 @@ const FreelancerProfile = () => {
               src={smileIcon}
             />
           </label>
-          <label className="text-black" htmlFor="is_positive_false">
+          <label className="" htmlFor="is_positive_false">
             <input
               checked={isCheckedNegative}
               className="absolute h-12 w-12 rounded-xl opacity-0"
@@ -229,7 +229,7 @@ const FreelancerProfile = () => {
           Добавить комментарий
         </Button>
       </form>
-      <ul className="width-full mx-auto flex w-fit flex-col gap-10 text-black">
+      <ul className="width-full mx-auto flex w-fit flex-col gap-10 ">
         Список комментариве:
         {projectsList}
       </ul>
