@@ -51,7 +51,6 @@ const MyProjectsList = () => {
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault()
-    console.log(formData)
     axios({
       method: 'post',
       headers: {

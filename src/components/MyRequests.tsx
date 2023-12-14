@@ -2,11 +2,15 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 
 import customerId from '../services/customerId'
+import IProject from '../types/project'
 
 const MyRequests = () => {
-  const [projects, setProjects] = useState([null])
+  const [projects, setProjects] = useState<IProject[]>()
 
-  const declineRequest = (id, event) => {
+  const declineRequest = (
+    id: any,
+    event: { preventDefault: () => void; stopPropagation: () => void }
+  ) => {
     event.preventDefault()
     event.stopPropagation()
 
