@@ -14,8 +14,10 @@ const ProjectWrapper = styled.div`
   margin-bottom: 1rem;
   border-radius: 0.75rem;
   background-color: var(--bg-card-primary);
-  border-width: 2px;
-  box-shadow: 0 10px 15px -3px var(--light-blue), 0 4px 6px -2px var(--light-blue);
+  //border-width: 2px;
+  //-webkit-box-shadow: 0px 0px 35px 2px rgba(0, 0, 51, 1);
+  //-moz-box-shadow: 0px 0px 35px 2px rgba(0, 0, 51, 1);
+  //box-shadow: 0px 0px 35px 2px rgba(0, 0, 51, 1);
 
   @media (min-width: 640px) {
   }

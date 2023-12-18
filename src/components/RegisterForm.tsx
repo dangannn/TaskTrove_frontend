@@ -53,7 +53,7 @@ const FormComponent = () => {
   return (
     <section className="grid min-h-screen place-content-center">
       <form
-        className="drop-shadow-3xl mx-auto flex flex-col gap-1 rounded-xl bg-white p-4 text-white sm:max-w-sm md:max-w-3xl md:p-10"
+        className="drop-shadow-3xl mx-auto flex flex-col gap-1 rounded-xl bg-white p-4 sm:max-w-sm md:max-w-3xl md:p-10"
         onSubmit={handleSubmit}
       >
         <fieldset className="mx-auto font-bold ">Авторизация</fieldset>
