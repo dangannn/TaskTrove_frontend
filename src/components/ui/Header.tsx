@@ -19,20 +19,69 @@ import {
 } from '../../services/routes'
 
 const HeaderWrapper = styled.header`
-  background-color: var(--bg-header);
+  background-color: var(--blue);
   width: 100%;
   min-height: min-content;
   margin-bottom: 1rem;
 `
 
 const NavWrapper = styled.nav`
-  background-color: var(--bg-header);
+  background-color: var(--blue);
   display: flex;
   padding: 1rem;
-  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   width: 100%;
+
+  @media screen and (max-width: 768px) {
+    flex-wrap: wrap;
+  }
+`
+
+const NavLinkWrapper = styled(Link)`
+  display: block;
+  padding: 0.1rem;
+  border-radius: 0.1rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  text-align: center;
+  transition-duration: 150ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+
+  &:hover {
+    color: var(--text-primary-light);
+    background-color: var(--light-blue);
+  }
+
+  &:active {
+    color: var(--text-primary-light);
+    background-color: var(--blue);
+  }
+
+  @media (min-width: 768px) {
+    font-size: 1rem;
+    line-height: 1.5rem;
+    padding: 0.3rem;
+    border-radius: 0.5rem;
+  }
+`
+
+const Logo = styled(NavLinkWrapper)`
+  color: var(--text-primary-light);
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 700;
+  @media (min-width: 768px) {
+    font-size: 1rem;
+    line-height: 1.5rem;
+    padding: 0.1rem;
+    border-radius: 0.1rem;
+  }
+`
+const ChangedLink = styled(NavLinkWrapper)`
+  @media (min-width: 768px) {
+    display: none;
+  }
 `
 
 interface MenuWrapperProps {
@@ -67,9 +116,11 @@ const HeaderImg = styled.img`
   height: 2rem;
 `
 
+type Theme = 'dark' | 'light'
+
 const Header = () => {
   const [burgerMenuActive, setBurgerMenuActive] = useState(false)
-  const [currentTheme, setCurrentTheme] = useState<'dark' | 'light'>('light')
+  const [currentTheme, setCurrentTheme] = useState<Theme>('light')
 
   const changeTheme = () => {
     const newTheme = currentTheme === 'dark' ? 'light' : 'dark'
@@ -93,9 +144,7 @@ const Header = () => {
     <>
       <HeaderWrapper>
         <NavWrapper>
-          <Link className="text-lg font-bold text-[#292D32]" to={ROOT_ROUTE}>
-            TaskTrove
-          </Link>
+          <Logo to={ROOT_ROUTE}>TaskTrove</Logo>
           <img
             alt="бургер меню"
             className="h-5 md:hidden"
@@ -103,49 +152,15 @@ const Header = () => {
             onClick={activeMenu}
           />
           <MenuWrapper burgerMenuActive={burgerMenuActive}>
-            <Link
-              className="block border-2 border-transparent text-center text-xs duration-150 ease-in hover:border-b-2 hover:border-b-[#783EFD]/40  md:text-base"
-              to={FREELANCERS_ROUTE}
-            >
-              Фрилансеры
-            </Link>
-            <Link
-              className="block border-2 border-transparent text-center text-xs duration-150 ease-in hover:border-b-2 hover:border-b-[#783EFD]/40  md:text-base"
-              to={PROJECTS_ROUTE}
-            >
-              Проекты
-            </Link>
-            <Link
-              className="block border-2 border-transparent text-center text-xs duration-150 ease-in hover:border-b-2 hover:border-b-[#783EFD]/40  md:text-base"
-              to={FAVORITE_LIST_ROUTE}
-            >
-              Избранное
-            </Link>
-            <Link
-              className="block border-2 border-transparent text-center text-xs duration-150 ease-in hover:border-b-2 hover:border-b-[#783EFD]/40  md:text-base"
-              to={MY_PROJECTS_ROUTE}
-            >
-              Мои проекты
-            </Link>
-            <Link
-              className="block border-2 border-transparent text-center text-xs duration-150 ease-in hover:border-b-2 hover:border-b-[#783EFD]/40  md:text-base"
-              to={MY_REQUESTS_ROUTE}
-            >
-              Мои запросы
-            </Link>
-            <Link
-              className="block border-2 border-transparent text-center text-xs duration-150 ease-in hover:border-b-2 hover:border-b-[#783EFD]/40  md:hidden md:text-base"
-              to={AUTH_ROUTE}
-              onClick={logout}
-            >
+            <NavLinkWrapper to={FREELANCERS_ROUTE}>Фрилансеры</NavLinkWrapper>
+            <NavLinkWrapper to={PROJECTS_ROUTE}>Проекты</NavLinkWrapper>
+            <NavLinkWrapper to={FAVORITE_LIST_ROUTE}>Избранное</NavLinkWrapper>
+            <NavLinkWrapper to={MY_PROJECTS_ROUTE}>Мои проекты</NavLinkWrapper>
+            <NavLinkWrapper to={MY_REQUESTS_ROUTE}>Мои запросы</NavLinkWrapper>
+            <ChangedLink to={AUTH_ROUTE} onClick={logout}>
               Выйти
-            </Link>
-            <Link
-              className="block border-2 border-transparent text-center text-xs duration-150 ease-in hover:border-b-2 hover:border-b-[#783EFD]/40  md:hidden md:text-base"
-              to={CUSTOMER_PROFILE_ROUTE}
-            >
-              Профиль
-            </Link>
+            </ChangedLink>
+            <ChangedLink to={CUSTOMER_PROFILE_ROUTE}>Профиль</ChangedLink>
           </MenuWrapper>
           <div className="hidden gap-2 md:flex">
             <Link className="h-8" to={AUTH_ROUTE} onClick={logout}>
