@@ -115,7 +115,7 @@ const FreelancerProfile = () => {
       .catch((error) => {
         console.error('Ошибка вывода постов:', error)
       })
-  }, [comments])
+  }, [])
 
   const projectsList = comments
     ? comments.map((item) => (
