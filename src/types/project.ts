@@ -6,6 +6,7 @@ interface IProject {
   payment: number
   pub_date: number
   customer_id: number
+  customer: string
 }
 
 export default IProject

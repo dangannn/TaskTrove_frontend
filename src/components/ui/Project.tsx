@@ -1,4 +1,5 @@
 import React from 'react'
+import styled from 'styled-components'
 
 import IProject from '../../types/project'
 
@@ -8,31 +9,42 @@ interface IProjectProps {
   children?: any | undefined
 }
 
+const ProjectWrapper = styled.div`
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 0.75rem;
+  background-color: var(--bg-card-primary);
+  //border-width: 2px;
+  //-webkit-box-shadow: 0px 0px 35px 2px rgba(0, 0, 51, 1);
+  //-moz-box-shadow: 0px 0px 35px 2px rgba(0, 0, 51, 1);
+  //box-shadow: 0px 0px 35px 2px rgba(0, 0, 51, 1);
+
+  @media (min-width: 640px) {
+  }
+  @media (min-width: 768px) {
+    max-width: 48rem;
+  }
+`
 const Project = ({ project, children }: IProjectProps) => {
   return (
     <>
-      <div
-        key={project?.id}
-        className="md:w-3xl projects-start mx-auto mb-4 rounded-xl bg-white p-4 drop-shadow-xl sm:mx-auto md:max-w-3xl"
-      >
-        <h3 className="text-xl text-[#4E64F9]">{project?.name}</h3>
-        <span className="text-sm text-[#BDBDBD]">
-          {new Date(project?.pub_date || '').toLocaleString('ru-RU')}
-        </span>
-        <p className="text-base text-[#686868]">
-          <span className="font-bold text-black">Оплата: </span>
+      <ProjectWrapper key={project?.id}>
+        <h3 className="text-xl">{project?.name}</h3>
+        <span className="text-sm">{new Date(project?.pub_date || '').toLocaleString('ru-RU')}</span>
+        <p className="text-base">
+          <span className="font-bold">Оплата: </span>
           {project?.payment} р
         </p>
-        <p className="text-base text-[#686868]">
-          <span className="font-bold text-black">Срочность: </span>
+        <p className="text-base">
+          <span className="font-bold">Срочность: </span>
           {project?.urgency}
         </p>
-        <p className="text-base text-[#686868]">
-          <span className="font-bold text-black">Описание: </span>
+        <p className="text-base">
+          <span className="font-bold">Описание: </span>
           {project?.description}
         </p>
         {children}
-      </div>
+      </ProjectWrapper>
     </>
   )
 }

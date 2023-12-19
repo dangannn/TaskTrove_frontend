@@ -41,7 +41,6 @@ const ProjectDetails = () => {
         return response
       })
       .catch((error) => {
-        // Обработка ошибки
         console.error('Ошибка вывода постов:', error)
       })
     console.log(freelancers)
@@ -64,8 +63,8 @@ const ProjectDetails = () => {
 
   return (
     <div>
-      <Project project={project} />
-      <ul className="width-full mx-auto flex w-fit flex-col gap-10 text-black">
+      <Project key={project?.id} project={project} />
+      <ul className="width-full mx-auto flex w-fit flex-col gap-10">
         Список откликнувшихся фрилансеров:
         {freelancersList}
       </ul>

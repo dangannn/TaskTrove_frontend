@@ -2,11 +2,15 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 
 import customerId from '../services/customerId'
+import IProject from '../types/project'
 
 const MyRequests = () => {
-  const [projects, setProjects] = useState([null])
+  const [projects, setProjects] = useState<IProject[]>()
 
-  const declineRequest = (id, event) => {
+  const declineRequest = (
+    id: any,
+    event: { preventDefault: () => void; stopPropagation: () => void }
+  ) => {
     event.preventDefault()
     event.stopPropagation()
 
@@ -53,7 +57,7 @@ const MyRequests = () => {
           <li className="md:w-3xl mx-auto mb-4 items-start rounded-xl bg-white p-4 drop-shadow-xl sm:mx-auto md:max-w-3xl">
             <h3 className="text-xl text-[#4E64F9]">{item?.name}</h3>
             <span className="text-sm text-[#BDBDBD]">Заказчик: {item?.customer}</span>
-            <p className="text-base text-black">{item?.description}</p>
+            <p className="text-base">{item?.description}</p>
             <button
               className="mx-auto mt-4 rounded-md border-2 bg-[#246BFD] p-2 text-white duration-300 ease-linear hover:bg-[#246BFD]/80 focus:border-black focus:outline-0 active:bg-[#246BFD]/60 active:shadow-blue-900"
               onClick={declineRequest.bind(null, item?.id)}
@@ -67,7 +71,7 @@ const MyRequests = () => {
 
   return (
     <div>
-      <ul className="mx-auto  flex w-fit flex-col gap-10 text-black">
+      <ul className="mx-auto  flex w-fit flex-col gap-10">
         Список моих запросов:
         {projectsList}
       </ul>

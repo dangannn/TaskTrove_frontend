@@ -34,19 +34,19 @@ const CustomerProfile = () => {
           className="mx-2 flex max-w-sm flex-col gap-2 rounded-3xl border-2 border-blue-200 p-4 shadow-lg shadow-blue-200
              sm:mx-auto"
         >
-          <span className="text-base text-black">
+          <span className="text-base">
             <span className="font-bold">Имя:</span> {customer?.first_name}
           </span>
-          <span className="text-base text-black">
+          <span className="text-base">
             <span className="font-bold">Фамилия:</span> {customer?.last_name}
           </span>
-          <span className="text-base text-black">
+          <span className="text-base">
             <span className="font-bold">Никнейм:</span> {customer?.username}
           </span>
-          <span className="text-base text-black">
+          <span className="text-base">
             <span className="font-bold">Почта:</span> {customer?.email}
           </span>
-          <span className="text-base text-black">
+          <span className="text-base">
             <span className="font-bold">Номер телефона: </span>
             {customer?.phone_number}
           </span>

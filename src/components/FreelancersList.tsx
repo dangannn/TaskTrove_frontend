@@ -83,7 +83,7 @@ const FreelancersList = () => {
 
   return (
     <>
-      <ul className="mx-auto mb-5 flex w-fit flex-col gap-10 text-black">
+      <ul className="mx-auto mb-5 flex w-fit flex-col gap-10">
         Список фрилансеров:
         {freelancersList}
       </ul>

@@ -74,7 +74,7 @@ const FavoriteList = () => {
 
   return (
     <section>
-      <ul className="mx-auto flex w-fit flex-col gap-10 text-black">
+      <ul className="mx-auto flex w-fit flex-col gap-10">
         {projectsList.length > 0 ? projectsList : <li>список пуст</li>}
       </ul>
     </section>
