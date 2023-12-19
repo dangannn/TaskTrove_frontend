@@ -44,6 +44,7 @@ const Home = () => {
       .get('/projects/best_week_projects/')
       .then((response) => {
         setBestWeekProjects(response.data)
+        console.log(response.data)
 
         return response
       })
@@ -55,6 +56,7 @@ const Home = () => {
       .get('/projects/best_year_projects/')
       .then((response) => {
         setBestYearProjects(response.data)
+        console.log(response.data)
 
         return response
       })

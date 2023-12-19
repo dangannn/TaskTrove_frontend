@@ -13,7 +13,7 @@ const FormComponent = () => {
     username: '',
     email: '',
     password: '',
-    groups: []
+    groups: ['1']
   })
 
   const [warningMessage, setWarningMessage] = useState('')
@@ -98,14 +98,14 @@ const FormComponent = () => {
           className=""
           id="groups"
           name="groups"
-          value={formData.groups}
+          value={formData.groups[0]}
           onChange={handleChangeList}
         >
           <option className="" value="1">
-            Фрилансер
+            Заказчик
           </option>
           <option className="" value="2">
-            Заказчик
+            Фрилансер
           </option>
         </select>
         <label className="" htmlFor="password">
