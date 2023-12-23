@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import axios from 'axios'
+import { toast, Toaster } from 'sonner'
 
 import Freelancer from '../types/freelancer'
 import axiosInstance from '../services/axiosInstance'
@@ -13,37 +14,29 @@ const ProjectDetails = () => {
   const [project, setProject] = useState<IProject>()
   const { id } = useParams()
 
+  const getProject = async () => {
+    try {
+      const { data } = await axiosInstance.get(`/projects/${id}`)
+
+      setProject(data)
+    } catch (error) {
+      toast.error('Ошибка получения проекта')
+    }
+  }
+
+  const getFreelancers = async () => {
+    try {
+      const { data } = await axiosInstance.get(`/projects/${id}/freelancers/`)
+
+      setFreelancers(data)
+    } catch (error) {
+      toast.error('Ошибка получения проекта')
+    }
+  }
+
   useEffect(() => {
-    axiosInstance
-      .get(`/projects/${id}`)
-      .then((response) => {
-        setProject(response.data)
-
-        return response
-      })
-      .catch((error) => {
-        // Обработка ошибки
-        console.error('Ошибка вывода постов:', error)
-      })
-    console.log(project)
-    console.log(id)
-    axios({
-      method: 'get',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      url: `http://127.0.0.1:8000/api/projects/${id}/freelancers/`,
-      responseType: 'json'
-    })
-      .then((response) => {
-        setFreelancers(response.data)
-
-        return response
-      })
-      .catch((error) => {
-        console.error('Ошибка вывода постов:', error)
-      })
-    console.log(freelancers)
+    getProject()
+    getFreelancers()
   }, [])
 
   const freelancersList =
@@ -62,12 +55,14 @@ const ProjectDetails = () => {
       : 'список пуст'
 
   return (
-    <div>
+    <div className="flex flex-col items-center justify-center">
+      <h2 className="text-2xl font-bold">Проект:</h2>
       <Project key={project?.id} project={project} />
       <ul className="width-full mx-auto flex w-fit flex-col gap-10">
         Список откликнувшихся фрилансеров:
         {freelancersList}
       </ul>
+      <Toaster />
     </div>
   )
 }

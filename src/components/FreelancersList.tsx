@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
+import { toast } from 'sonner'
 
 import customerId from '../services/customerId'
 import addIcon from '../assets/images/add-icon.svg'
@@ -29,30 +30,24 @@ const FreelancersList = () => {
     getFreelancersRequest(LIMIT_FREELANCERS, (page - 1) * LIMIT_FREELANCERS)
   }, [page])
 
-  const addToFavoriteList = (id: number, event: any) => {
+  const addToFavoriteList = async (id: number, event: any) => {
     event.preventDefault()
     event.stopPropagation()
 
     const formData = {
       freelancer: [`${id}`]
     }
-    const favoriteListUrl = `http://127.0.0.1:8000/api/favorite_lists/${customerId}/update_favorite_list/`
 
-    axios({
-      method: 'patch',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      url: favoriteListUrl,
-      data: formData,
-      responseType: 'json'
-    })
-      .then((response) => {
-        return response
-      })
-      .catch((error) => {
-        console.error('Ошибка вывода постов:', error)
-      })
+    try {
+      const { data } = await axiosInstance.patch(
+        `/favorite_lists/${customerId}/update_favorite_list/`,
+        formData
+      )
+
+      toast.success('Добавлено в Избранное')
+    } catch (error) {
+      toast.error('Ошибка добавления в избранное')
+    }
   }
 
   const freelancersList = freelancers

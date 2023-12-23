@@ -1,58 +1,44 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import { toast } from 'sonner'
 
 import customerId from '../services/customerId'
 import IProject from '../types/project'
+import axiosInstance from '../services/axiosInstance'
 
 const MyRequests = () => {
-  const [projects, setProjects] = useState<IProject[]>()
+  const [requests, setRequests] = useState<IProject[]>()
 
-  const declineRequest = (
+  const declineRequest = async (
     id: any,
     event: { preventDefault: () => void; stopPropagation: () => void }
   ) => {
     event.preventDefault()
     event.stopPropagation()
 
-    const projectUrl = `http://127.0.0.1:8000/api/requests/${id}/`
+    try {
+      const { data } = await axiosInstance.delete(`/requests/${id}/`)
+    } catch (error) {
+      toast.error('Ошибка отказа в проекте')
+    }
+  }
 
-    axios({
-      method: 'delete',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      url: projectUrl,
-      responseType: 'json'
-    })
-      .then((response) => {
-        return response
-      })
-      .catch((error) => {
-        console.error('Ошибка вывода постов:', error)
-      })
+  const getRequests = async () => {
+    try {
+      const { data } = await axiosInstance.get(`/users/${customerId}/requests/`)
+
+      setRequests(data)
+    } catch (error) {
+      toast.error('Ошибка получения запросов')
+    }
   }
 
   useEffect(() => {
-    axios({
-      method: 'get',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      url: `http://127.0.0.1:8000/api/users/${customerId}/requests/`,
-      responseType: 'json'
-    })
-      .then((response) => {
-        setProjects(response.data)
-
-        return response
-      })
-      .catch((error) => {
-        // Обработка ошибки
-        console.error('Ошибка вывода постов:', error)
-      })
+    getRequests()
   }, [])
-  const projectsList = projects
-    ? projects.map((item) => (
+
+  const requestsList = requests
+    ? requests.map((item) => (
         <>
           <li className="md:w-3xl mx-auto mb-4 items-start rounded-xl bg-white p-4 drop-shadow-xl sm:mx-auto md:max-w-3xl">
             <h3 className="text-xl text-[#4E64F9]">{item?.name}</h3>
@@ -73,7 +59,7 @@ const MyRequests = () => {
     <div>
       <ul className="mx-auto  flex w-fit flex-col gap-10">
         Список моих запросов:
-        {projectsList}
+        {requestsList}
       </ul>
     </div>
   )

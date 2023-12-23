@@ -1,18 +1,20 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
 import { useParams } from 'react-router-dom'
+import { toast } from 'sonner'
 
 import customerId from '../services/customerId'
 import smileIcon from '../assets/images/smile.svg'
 import sadIcon from '../assets/images/sad.svg'
 import Freelancer from '../types/freelancer'
+import Comment from '../types/comment'
+import axiosInstance from '../services/axiosInstance'
 
 import Button from './ui/Button'
 import Input from './ui/Input'
 
 const FreelancerProfile = () => {
-  const [freelancer, setFreelancer] = useState<Freelancer[]>([])
-  const [comments, setComments] = useState([null])
+  const [freelancer, setFreelancer] = useState<Freelancer>()
+  const [comments, setComments] = useState<Comment[]>([])
   const { id } = useParams()
 
   const [formRequestData, setFormRequestData] = useState({
@@ -37,7 +39,7 @@ const FreelancerProfile = () => {
   const handleRequestFormChange = (e: { target: { name: any; value: any } }) => {
     setFormRequestData({ ...formRequestData, [e.target.name]: e.target.value })
   }
-  const handleCommentChangeBoolean = (value, e) => {
+  const handleCommentChangeBoolean = (value: any, e: { target: { name: any } }) => {
     setFormCommentData({ ...formCommentData, [e.target.name]: Boolean(value) })
     if (value) {
       setIsCheckedPositive(true)
@@ -48,89 +50,63 @@ const FreelancerProfile = () => {
     }
   }
 
-  const addCommentUrl = 'http://127.0.0.1:8000/api/comments/'
-  const addRequestUrl = 'http://127.0.0.1:8000/api/requests/'
-  const handleSubmit = (url: string, data, event) => {
+  const addCommentUrl = '/comments/'
+  const addRequestUrl = '/requests/'
+
+  const requestTmpFreelancers = `/freelancers/${id}/`
+  const requestTmpComments = `/users/${id}/comments/`
+  const handleSubmit = async (url: string, formData: any, errMessage: string, event: any) => {
     event.preventDefault()
     event.stopPropagation()
-    console.log(data)
-    axios({
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      url,
-      data,
-      responseType: 'json'
-    })
-      .then((response) => {
-        return response.data
-      })
-      .then((data) => {
-        const token = data.access
-
-        return token
-      })
-      .catch((error) => {
-        console.error(`Ошибка авторизации:${error}`)
-      })
+    try {
+      const { data } = await axiosInstance.post(url, formData)
+    } catch (error) {
+      toast.error(errMessage)
+    }
   }
 
-  const requestTmpFreelancers = `http://127.0.0.1:8000/api/freelancers/${id}/`
-  const requestTmpComments = `http://127.0.0.1:8000/api/users/${id}/comments/`
+  const getFreelancer = async () => {
+    try {
+      const { data } = await axiosInstance.get(requestTmpFreelancers)
+
+      setFreelancer(data)
+    } catch (error) {
+      toast.error('Ошибка запросы данных фрилансера')
+    }
+  }
+
+  const getComments = async () => {
+    try {
+      const { data } = await axiosInstance.get(requestTmpComments)
+
+      setComments(data)
+    } catch (error) {
+      toast.error('Ошибка запросы комментариев')
+    }
+  }
 
   useEffect(() => {
-    axios({
-      method: 'get',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      url: requestTmpFreelancers,
-      responseType: 'json'
-    })
-      .then((response) => {
-        setFreelancer(response.data)
-
-        return response
-      })
-      .catch((error) => {
-        console.error('Ошибка вывода постов:', error)
-      })
-  }, [requestTmpFreelancers])
-
-  useEffect(() => {
-    axios({
-      method: 'get',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      url: requestTmpComments,
-      responseType: 'json'
-    })
-      .then((response) => {
-        setComments(response.data)
-
-        return response
-      })
-      .catch((error) => {
-        console.error('Ошибка вывода постов:', error)
-      })
+    getFreelancer()
+    getComments()
   }, [])
 
-  const projectsList = comments
-    ? comments.map((item) => (
-        <>
-          <li
-            className={`mx-2 max-w-sm rounded-3xl border-2 border-blue-200 p-4 shadow-lg shadow-blue-200 sm:mx-auto
+  const projectsList =
+    comments.length > 0
+      ? comments.map((item) => (
+          <>
+            <li
+              className={`mx-2 max-w-sm rounded-3xl border-2 border-blue-200 p-4 shadow-lg shadow-blue-200 sm:mx-auto
             ${item?.is_positive ? 'bg-green-50' : 'bg-red-400'}`}
-          >
-            <h3 className="text-xl text-[#4E64F9]">{item?.author}</h3>
-            <span className="text-xl text-[#4E64F9]">{item?.pub_date}</span>
-            <p className="text-xl text-[#4E64F9]">{item?.description}</p>
-          </li>
-        </>
-      ))
-    : 'нет проектов'
+            >
+              <h3 className="text-xl text-[#4E64F9]">{item?.author}</h3>
+              <span className="text-xl text-[#4E64F9]">
+                {new Date(item?.pub_date).toLocaleString('ru-RU')}
+              </span>
+              <p className="text-xl text-[#4E64F9]">{item?.description}</p>
+            </li>
+          </>
+        ))
+      : 'нет проектов'
 
   return (
     <div className="mx-auto flex w-fit flex-col gap-10 ">
@@ -173,7 +149,11 @@ const FreelancerProfile = () => {
           value={formRequestData.description}
           onChange={handleRequestFormChange}
         />
-        <Button onClick={handleSubmit.bind(null, addRequestUrl, formRequestData)}>
+        <Button
+          onClick={(event: any) =>
+            handleSubmit(addRequestUrl, formRequestData, 'Ошибка отправки запроса', event)
+          }
+        >
           Отправить запрос
         </Button>
       </form>
@@ -225,7 +205,11 @@ const FreelancerProfile = () => {
             />
           </label>
         </div>
-        <Button onClick={handleSubmit.bind(null, addCommentUrl, formCommentData)}>
+        <Button
+          onClick={(event: any) =>
+            handleSubmit(addCommentUrl, formCommentData, 'Ошибка добавления комментария', event)
+          }
+        >
           Добавить комментарий
         </Button>
       </form>

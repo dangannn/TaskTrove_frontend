@@ -1,6 +1,9 @@
 import { useState } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
+import { toast, Toaster } from 'sonner'
+
+import axiosInstance from '../../services/axiosInstance'
 
 import Input from './Input'
 
@@ -28,37 +31,25 @@ const FormComponent = () => {
     setAuthToken(token)
   }
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault()
-    axios({
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      url: 'http://127.0.0.1:8000/api/token/',
-      data: formData,
-      responseType: 'json'
-    })
-      .then((response) => {
-        return response.data
-      })
-      .then((data) => {
-        const token = data.access
-        const { refresh } = data
 
-        //set JWT token to local
-        localStorage.setItem('token', token)
-        localStorage.setItem('refresh', refresh)
-        //set token to axios common header
-        setAuthToken(token)
-        //redirect user to home page
-        window.location.href = '/projects'
+    try {
+      const { data } = await axiosInstance.post('/token/', formData)
+      const token = data.access
+      // const { refresh } = data
 
-        return token
-      })
-      .catch((error) => {
-        setWarningMessage(`Ошибка авторизации:${error}`)
-      })
+      //set JWT token to local
+      localStorage.setItem('token', data.access)
+      // localStorage.setItem('refresh', refresh)
+
+      //set token to axios common header
+      setAuthToken(token)
+      //redirect user to home page
+      window.location.href = '/projects'
+    } catch (error) {
+      toast.error(`Ошибка авторизации:${error}`)
+    }
   }
 
   return (
@@ -99,6 +90,7 @@ const FormComponent = () => {
         </button>
         <span className="max-w-sm text-red-600">{warningMessage}</span>
       </form>
+      <Toaster />
     </section>
   )
 }

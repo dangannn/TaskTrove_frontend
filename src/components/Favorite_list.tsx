@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
+import { toast } from 'sonner'
 
 import customerId from '../services/customerId'
 import removeIcon from '../assets/images/remove-icon.svg'
@@ -9,43 +10,37 @@ import Freelancer from '../types/freelancer'
 
 const FavoriteList = () => {
   const [favoriteList, setFavoriteList] = useState<Freelancer[]>([])
-  const removeFromFavoriteList = (id: number, event: any) => {
+  const removeFromFavoriteList = async (id: number, event: any) => {
     event.preventDefault()
     event.stopPropagation()
 
     const formData = {
       freelancer: [id]
     }
-    const favoriteListUrl = `http://127.0.0.1:8000/api/favorite_lists/${customerId}/remove_favorite_list/`
 
-    axios({
-      method: 'patch',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      url: favoriteListUrl,
-      data: formData,
-      responseType: 'json'
-    })
-      .then((response) => {
-        return response
-      })
-      .catch((error) => {
-        console.error('Ошибка вывода постов:', error)
-      })
+    try {
+      const { data } = await axiosInstance.patch(
+        `/favorite_lists/${customerId}/remove_favorite_list/`,
+        formData
+      )
+
+      toast.success('Фрилансер удален из Избранного')
+    } catch (error) {
+      toast.error('Ошибка вывода постов')
+    }
+  }
+  const getFavoriteList = async () => {
+    try {
+      const { data } = await axiosInstance.get(`/favorite_lists/${customerId}/favorite_list/`)
+
+      setFavoriteList(data)
+    } catch (error) {
+      toast.error('Ошибка запроса Избранного')
+    }
   }
 
   useEffect(() => {
-    axiosInstance
-      .get(`/favorite_lists/${customerId}/favorite_list/`)
-      .then((response) => {
-        setFavoriteList(response.data)
-
-        return response
-      })
-      .catch((error) => {
-        console.error('Ошибка вывода постов:', error)
-      })
+    getFavoriteList()
   }, [])
 
   const projectsList = favoriteList
