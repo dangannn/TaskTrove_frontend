@@ -1,31 +1,28 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import { toast } from 'sonner'
 
 import customerId from '../services/customerId'
 import User from '../types/user'
+import axiosInstance from '../services/axiosInstance'
 
 const CustomerProfile = () => {
   const [customer, setCustomer] = useState<User>()
-  const requestTmpFreelancers = `http://127.0.0.1:8000/api/users/${customerId}/`
+  const requestTmpFreelancers = `/users/${customerId}/`
+
+  const getCustomer = async () => {
+    try {
+      const { data } = await axiosInstance.get(requestTmpFreelancers)
+
+      setCustomer(data)
+    } catch (error) {
+      toast.error('Ошибка запроса ваших данных')
+    }
+  }
 
   useEffect(() => {
-    axios({
-      method: 'get',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      url: requestTmpFreelancers,
-      responseType: 'json'
-    })
-      .then((response) => {
-        setCustomer(response.data)
-
-        return response
-      })
-      .catch((error) => {
-        console.error('Ошибка вывода постов:', error)
-      })
-  }, [requestTmpFreelancers])
+    getCustomer()
+  }, [])
 
   return (
     <section>

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
+import { toast, Toaster } from 'sonner'
 
 import customerId from '../services/customerId'
 import trashIcon from '../assets/images/trashIcon.svg'
 import IProject from '../types/project'
+import axiosInstance from '../services/axiosInstance'
 
 import Input from './ui/Input'
 import Button from './ui/Button'
@@ -20,80 +22,55 @@ const MyProjectsList = () => {
     payment: 0
   })
 
-  const removeFromFavoriteList = (id: number, event: any) => {
-    event.preventDefault()
-    event.stopPropagation()
+  const getProjects = async () => {
+    try {
+      const { data } = await axiosInstance.get(`/projects/${customerId}/projects/`)
 
-    const projectUrl = `http://127.0.0.1:8000/api/projects/${id}/`
-
-    axios({
-      method: 'delete',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      url: projectUrl,
-      responseType: 'json'
-    })
-      .then((response) => {
-        return response
-      })
-      .catch((error) => {
-        console.error('Ошибка вывода постов:', error)
-      })
-  }
-  const handleChange = (e: { target: { name: any; value: any } }) => {
-    if (e.target.name != 'payment') {
-      setFormData({ ...formData, [e.target.name]: e.target.value })
-    } else {
-      setFormData({ ...formData, [e.target.name]: Number(e.target.value) })
+      setProjects(data)
+    } catch (error) {
+      toast.error('Ошибка вывода постов')
     }
   }
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
-    e.preventDefault()
-    axios({
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      url: 'http://127.0.0.1:8000/api/projects/',
-      data: formData,
-      responseType: 'json'
-    })
-      .then((response) => {
-        return response.data
-      })
-      .then((data) => {
-        const token = data.access
+  useEffect(() => {
+    getProjects()
+  }, [])
 
-        return token
-      })
-      .catch((error) => {
-        console.error(`Ошибка авторизации:${error}`)
+  const removeProject = async (id: number, event: any) => {
+    event.preventDefault()
+    event.stopPropagation()
 
-        return error
-      })
+    const projectUrl = `/projects/${id}/`
+
+    try {
+      const { data } = await axiosInstance.delete(projectUrl)
+
+      toast.success('Проект удален')
+    } catch (error) {
+      toast.error('Ошибка удаления проекта')
+    }
   }
 
-  useEffect(() => {
-    axios({
-      method: 'get',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      url: `http://127.0.0.1:8000/api/projects/${customerId}/projects/`,
-      responseType: 'json'
-    })
-      .then((response) => {
-        setProjects(response.data)
+  const handleChange = (e: { target: { name: any; value: any } }) => {
+    if (e.target.name === 'payment') {
+      setFormData({ ...formData, [e.target.name]: Number(e.target.value) })
+    } else {
+      setFormData({ ...formData, [e.target.name]: e.target.value })
+    }
+  }
 
-        return response
-      })
-      .catch((error) => {
-        console.error('Ошибка вывода постов:', error)
-      })
-    console.log(projects)
-  }, [])
+  const handleSubmit = async (event: any) => {
+    event.preventDefault()
+    event.stopPropagation()
+    try {
+      const { data } = await axiosInstance.post('/projects/', formData)
+
+      toast.success('Проект создан')
+    } catch (err) {
+      toast.error('Ошбика создания проекта')
+    }
+  }
+
   const projectsList = projects
     ? projects.map((item) => (
         <>
@@ -112,7 +89,7 @@ const MyProjectsList = () => {
             </div>
             <button
               className="ease w-fit rounded-lg duration-300 hover:bg-red-400 active:bg-red-400/60 "
-              onClick={removeFromFavoriteList.bind(null, item?.id)}
+              onClick={removeProject.bind(null, item?.id)}
             >
               <img alt="удалить проект" className="w-8 p-1" src={trashIcon} />
             </button>
@@ -168,6 +145,7 @@ const MyProjectsList = () => {
         Список моих проектов:
         {projectsList}
       </ul>
+      <Toaster />
     </>
   )
 }

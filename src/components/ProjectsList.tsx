@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
+import { toast, Toaster } from 'sonner'
 
 import customerId from '../services/customerId'
 import axiosInstance from '../services/axiosInstance'
@@ -30,6 +31,7 @@ const ProjectsList = () => {
   const [page, setPage] = useState(1)
   const [filter, setFilter] = useState('')
   const [search, setSearch] = useState('')
+  const [isPositive, setIsPositive] = useState(false)
 
   const getProjectsRequest = async (limit: number, offset: number) => {
     const { data } = await axiosInstance.get(
@@ -47,7 +49,7 @@ const ProjectsList = () => {
   const handleSearch = (e: { target: { name: any; value: any } }) => {
     setSearch(String([e.target.value]))
   }
-  const createRequest = (id: number, event: any) => {
+  const createRequest = async (id: number, event: any) => {
     event.preventDefault()
     event.stopPropagation()
 
@@ -55,14 +57,13 @@ const ProjectsList = () => {
       freelancer: [customerId]
     }
 
-    axiosInstance
-      .patch(`/projects/${id}/add_freelancer/`, formData)
-      .then((response) => {
-        return response
-      })
-      .catch((error) => {
-        console.error('Ошибка отклика на проект:', error)
-      })
+    try {
+      const { data } = await axiosInstance.patch(`/projects/${id}/add_freelancer/`, formData)
+
+      toast.success('Вы откликнулись')
+    } catch (error) {
+      toast.error('Ошибка отклика на проект')
+    }
   }
 
   useEffect(() => {
@@ -108,6 +109,7 @@ const ProjectsList = () => {
         setPage={setPage}
         totalPage={Math.ceil(totalCount / LIMIT_PROJECTS)}
       />
+      <Toaster />
     </section>
   )
 }

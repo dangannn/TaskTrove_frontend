@@ -15,7 +15,6 @@ import {
   REGISTER_ROUTE,
   ROOT_ROUTE
 } from '../services/routes'
-import GlobalStyles from '../global-styles'
 
 import AuthForm from './ui/AuthForm'
 import ProjectsList from './ProjectsList'

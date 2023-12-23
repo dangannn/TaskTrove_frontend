@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import axios from 'axios'
 import { Link } from 'react-router-dom'
 
 import { AUTH_ROUTE } from '../services/routes'
+import axiosInstance from '../services/axiosInstance'
 
 import Input from './ui/Input'
 
@@ -26,28 +26,18 @@ const FormComponent = () => {
     setFormData({ ...formData, [e.target.name]: [e.target.value] })
   }
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault()
     console.log(formData)
-    axios({
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      url: 'http://127.0.0.1:8000/api/users/',
-      data: formData,
-      responseType: 'json'
-    })
-      .then((response) => response.data)
-      .then((data) => {
-        console.log(data)
-        window.location.href = AUTH_ROUTE
+    try {
+      const { data } = await axiosInstance.post('/users/', formData)
 
-        return data
-      })
-      .catch((error) => {
-        setWarningMessage(`Ошибка регистрации:${error}`)
-      })
+      if (data) {
+        window.location.href = AUTH_ROUTE
+      }
+    } catch (error) {
+      setWarningMessage(`Ошибка регистрации:${error}`)
+    }
   }
 
   return (
@@ -101,16 +91,10 @@ const FormComponent = () => {
           value={formData.groups[0]}
           onChange={handleChangeList}
         >
-          <option className="" value="1">
-            Заказчик
-          </option>
-          <option className="" value="2">
-            Фрилансер
-          </option>
+          <option value="1">Заказчик</option>
+          <option value="2">Фрилансер</option>
         </select>
-        <label className="" htmlFor="password">
-          Пароль:
-        </label>
+        <label htmlFor="password">Пароль:</label>
         <Input
           id="password"
           name="password"

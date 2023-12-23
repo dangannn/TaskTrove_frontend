@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
+import { toast } from 'sonner'
 
 import axiosInstance from '../services/axiosInstance'
 import IProject from '../types/project'
@@ -39,30 +40,29 @@ const Home = () => {
   const [bestWeekProjects, setBestWeekProjects] = useState<IProject[]>([])
   const [bestYearProjects, setBestYearProjects] = useState<IProject[]>([])
 
+  const getBestWeekProjects = async () => {
+    try {
+      const { data } = await axiosInstance.get('/projects/best_week_projects/')
+
+      setBestWeekProjects(data)
+    } catch (error) {
+      toast.error('Ошибка получения проектов')
+    }
+  }
+
+  const getBestYearProjects = async () => {
+    try {
+      const { data } = await axiosInstance.get('/projects/best_year_projects/')
+
+      setBestYearProjects(data)
+    } catch (error) {
+      toast.error('Ошибка получения проектов')
+    }
+  }
+
   useEffect(() => {
-    axiosInstance
-      .get('/projects/best_week_projects/')
-      .then((response) => {
-        setBestWeekProjects(response.data)
-        console.log(response.data)
-
-        return response
-      })
-      .catch((error) => {
-        console.error('Ошибка запроса лучших проектов недели:', error)
-      })
-
-    axiosInstance
-      .get('/projects/best_year_projects/')
-      .then((response) => {
-        setBestYearProjects(response.data)
-        console.log(response.data)
-
-        return response
-      })
-      .catch((error) => {
-        console.error('Ошибка запроса лучших проектов года:', error)
-      })
+    getBestWeekProjects()
+    getBestYearProjects()
   }, [])
 
   const bestWeekProjectsList =
