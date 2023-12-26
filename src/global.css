@@ -9,6 +9,7 @@
   --text-primary-light: #e7e7f7;
   --text-gray: #686868;
   --text-light-gray: #bdbdbd;
+  --text-error: #c03;
 }
 
 html[data-theme='light'] {

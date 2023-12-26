@@ -1,12 +1,66 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { data } from 'autoprefixer'
+import styled from 'styled-components'
 
 import { AUTH_ROUTE } from '../services/routes'
 import axiosInstance from '../services/axiosInstance'
 
-import Input from './ui/Input'
+import SubmitButton from './ui/SubmitButton'
+
+const RegisterFormWrapper = styled.form`
+  display: flex;
+  padding: 1rem;
+  flex-direction: column;
+  gap: 0.25rem;
+
+  border-radius: 0.75rem;
+  background-color: var(--bg-card-primary);
+
+  @media (min-width: 640px) {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    align-items: center;
+    gap: 0.25rem;
+    max-width: 24rem;
+  }
+  @media (min-width: 768px) {
+    padding: 2.5rem;
+    max-width: 48rem;
+  }
+`
+
+const RegisterFieldsetWrapper = styled.fieldset`
+  grid-area: 1 / 1 / 2 / 3;
+`
+
+const ErrorMessage = styled.span`
+  color: var(--text-error);
+`
+
+const InputWrapper = styled.input`
+  color: var(--text-primary);
+  display: flex;
+  padding: 0.75rem;
+  margin-top: 0.5rem;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.75rem;
+  border-width: 1px;
+  border-color: #e5e7eb;
+  outline-style: none;
+  width: 100%;
+  height: 3rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  transition-duration: 300ms;
+  transition-timing-function: linear;
+
+  &:focus {
+    border-color: var(--blue);
+  }
+`
 
 interface IRegisterForm {
   first_name: string
@@ -18,47 +72,27 @@ interface IRegisterForm {
 }
 
 const FormComponent = () => {
-  const [formData, setFormData] = useState<IRegisterForm>({
-    first_name: '',
-    last_name: '',
-    username: '',
-    email: '',
-    password: '',
-    groups: ['1']
-  })
-
   const {
-    register, // метод для регистрации вашего инпута, для дальнейшей работы с ним
-    handleSubmit, // метод для получения данных формы, если валидация прошла успешна
-    formState: { errors }, // errors - список ошибок валидации для всех полей формы
-    reset // метод для очистки полей формы
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+    reset
   } = useForm<IRegisterForm>({
-    mode: 'onBlur' // парметр onBlur - отвечает за запуск валидации при не активном состоянии поля
+    defaultValues: {
+      groups: ['1']
+    },
+    mode: 'onBlur'
   })
 
   const [warningMessage, setWarningMessage] = useState('')
 
-  const handleChange = (e: { target: { name: any; value: any } }) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
-  }
+  const saveElement: SubmitHandler<IRegisterForm> = async (data) => {
+    data['groups'] = [...data.groups]
 
-  const handleChangeList = (e: { target: { name: any; value: any } }) => {
-    setFormData({ ...formData, [e.target.name]: [e.target.value] })
-  }
-
-  const saveElement: SubmitHandler<IRegisterForm> = (data) => {
-    setFormData(data)
-    reset()
-  }
-
-  const handleFormSubmit = async () => {
-    console.log(formData)
     try {
-      const { data } = await axiosInstance.post('/users/', formData)
-
-      if (data) {
-        window.location.href = AUTH_ROUTE
-      }
+      await axiosInstance.post('/users/', data)
+      window.location.href = AUTH_ROUTE
+      reset()
     } catch (error) {
       setWarningMessage(`Ошибка регистрации:${error}`)
     }
@@ -66,83 +100,101 @@ const FormComponent = () => {
 
   return (
     <section className="grid min-h-screen place-content-center">
-      <form
-        className="drop-shadow-3xl mx-auto flex flex-col gap-1 rounded-xl bg-white p-4 sm:max-w-sm md:max-w-3xl md:p-10"
-        onSubmit={handleSubmit(handleFormSubmit)}
-      >
-        <fieldset className="mx-auto font-bold ">Авторизация</fieldset>
+      <RegisterFormWrapper onSubmit={handleSubmit(saveElement)}>
+        <RegisterFieldsetWrapper className="mx-auto font-bold ">
+          Регистрация
+        </RegisterFieldsetWrapper>
         <label className="" htmlFor="first_name">
-          Имя:
+          <span>Имя:</span>
+          <InputWrapper
+            id="first_name"
+            type="text"
+            {...register('first_name', {
+              required: 'Обязательное поле',
+              minLength: {
+                value: 5,
+                message: 'Нужно больше символов'
+              }
+            })}
+          />
+          <ErrorMessage>{errors.first_name?.message}</ErrorMessage>
         </label>
-        <Input
-          id="first_name"
-          name="first_name"
-          type="text"
-          value={formData.first_name}
-          onChange={handleChange}
-        />
-        <div>{errors.first_name?.message}</div>
         <label className="" htmlFor="last_name">
-          Фамилия:
+          <span>Фамилия:</span>
+          <InputWrapper
+            id="last_name"
+            type="text"
+            {...register('last_name', {
+              required: 'Обязательное поле',
+              minLength: {
+                value: 5,
+                message: 'Нужно больше символов'
+              }
+            })}
+          />
+          <ErrorMessage>{errors.last_name?.message}</ErrorMessage>
         </label>
-        <Input
-          id="last_name"
-          name="last_name"
-          type="text"
-          value={formData.last_name}
-          onChange={handleChange}
-        />
-        <div>{errors.last_name?.message}</div>
         <label className="" htmlFor="email">
-          Почта:
+          <span>Почта:</span>
+          <InputWrapper
+            id="email"
+            type="text"
+            {...register('email', {
+              required: 'Обязательное поле',
+              pattern: {
+                value: /\S+@\S+\.\S+/,
+                message: 'Не формат почты'
+              }
+            })}
+          />
+          <ErrorMessage>{errors.email?.message}</ErrorMessage>
         </label>
-        <Input id="email" name="email" type="text" value={formData.email} onChange={handleChange} />
-        <div>{errors.email?.message}</div>
         <label className="" htmlFor="username">
-          Логин:
+          <span>Логин:</span>
+          <InputWrapper
+            id="username"
+            type="text"
+            {...register('username', {
+              required: 'Обязательное поле',
+              minLength: {
+                value: 5,
+                message: 'Нужно больше символов'
+              }
+            })}
+          />
+          <ErrorMessage>{errors.username?.message}</ErrorMessage>
         </label>
-        <Input
-          id="username"
-          name="username"
-          type="text"
-          value={formData.username}
-          onChange={handleChange}
-        />
-        <div>{errors.username?.message}</div>
         <label className="" htmlFor="groups">
-          Работник:
+          <span>Работник:</span>
+          <select className="" id="groups" {...register('groups')}>
+            <option value="1">Заказчик</option>
+            <option value="2">Фрилансер</option>
+          </select>
+          <ErrorMessage>{errors.groups?.message}</ErrorMessage>
         </label>
-        <select
-          className=""
-          id="groups"
-          name="groups"
-          value={formData.groups[0]}
-          onChange={handleChangeList}
-        >
-          <option value="1">Заказчик</option>
-          <option value="2">Фрилансер</option>
-        </select>
-        <div>{errors.groups?.message}</div>
-        <label htmlFor="password">Пароль:</label>
-        <Input
-          id="password"
-          name="password"
-          type="password"
-          value={formData.password}
-          onChange={handleChange}
-        />
-        <div>{errors.password?.message}</div>
-        <Link className="" to={AUTH_ROUTE}>
+        <label htmlFor="password">
+          <span>Пароль:</span>
+          <InputWrapper
+            id="password"
+            type="password"
+            {...register('password', {
+              required: 'Обязательное поле',
+              minLength: {
+                value: 5,
+                message: 'Нужно больше символов'
+              }
+            })}
+          />
+          <ErrorMessage>{errors.password?.message}</ErrorMessage>
+        </label>
+        <Link className="underline" to={AUTH_ROUTE}>
           Уже есть аккаунт?
         </Link>
-        <button
-          className="mt-4 rounded-3xl border-2 bg-[#246BFD] py-2 duration-300 ease-linear focus:border-black focus:outline-0 active:shadow-blue-900"
-          type="submit"
-        >
+        <SubmitButton isValid={isValid} type="submit">
           Зарегистрироваться
-        </button>
-        <span className="max-w-sm text-red-600">{warningMessage}</span>
-      </form>
+        </SubmitButton>
+        <span className={`text-red-600} max-w-sm`}>{warningMessage}</span>
+      </RegisterFormWrapper>
     </section>
   )
 }
