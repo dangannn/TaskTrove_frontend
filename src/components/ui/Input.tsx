@@ -40,7 +40,7 @@ const Input = (props: InputProps) => {
       name={props.name}
       type={props.type}
       value={props?.value}
-      onChange={props.onChange}
+      onChange={props?.onChange}
     />
   )
 }
