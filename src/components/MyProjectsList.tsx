@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import axios from 'axios'
 import { toast, Toaster } from 'sonner'
+import ReactPDF, { PDFDownloadLink } from '@react-pdf/renderer'
 
 import customerId from '../services/customerId'
 import trashIcon from '../assets/images/trashIcon.svg'
@@ -10,6 +10,7 @@ import axiosInstance from '../services/axiosInstance'
 
 import Input from './ui/Input'
 import Button from './ui/Button'
+import ProjectPdf from './ui/ProjectPdf'
 
 const MyProjectsList = () => {
   const [projects, setProjects] = useState<IProject[]>([])
@@ -63,9 +64,20 @@ const MyProjectsList = () => {
     event.preventDefault()
     event.stopPropagation()
     try {
-      const { data } = await axiosInstance.post('/projects/', formData)
+      const { data } = await axiosInstance.post(`/projects/${customerId}/create_project/`, formData)
 
       toast.success('Проект создан')
+
+      await ReactPDF.render(
+        <ProjectPdf
+          customer={formData.customer}
+          description={formData.description}
+          name={formData.name}
+          payment={formData.payment}
+          urgency={formData.urgency}
+        />,
+        `project/example.pdf`
+      )
     } catch (err) {
       toast.error('Ошбика создания проекта')
     }
@@ -141,11 +153,35 @@ const MyProjectsList = () => {
         />
         <Button onClick={handleSubmit}>Добавить проект</Button>
       </form>
+      {/*<PDFViewer>*/}
+      {/*  <ProjectPdf*/}
+      {/*    name={formData.name}*/}
+      {/*    description={formData.description}*/}
+      {/*    customer={formData.customer}*/}
+      {/*    urgency={formData.urgency}*/}
+      {/*    payment={formData.payment}*/}
+      {/*  />*/}
+      {/*</PDFViewer>*/}
+      <PDFDownloadLink
+        document={
+          <ProjectPdf
+            customer={formData.customer}
+            description={formData.description}
+            name={formData.name}
+            payment={formData.payment}
+            urgency={formData.urgency}
+          />
+        }
+        fileName="somename.pdf"
+      >
+        {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Download now!')}
+      </PDFDownloadLink>
       <ul className="width-full mx-auto flex w-fit flex-col gap-10 ">
         Список моих проектов:
         {projectsList}
       </ul>
       <Toaster />
+      );
     </>
   )
 }
