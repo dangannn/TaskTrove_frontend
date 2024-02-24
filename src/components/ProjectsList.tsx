@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { toast, Toaster } from 'sonner'
+import { useInView } from 'react-intersection-observer'
 
 import customerId from '../services/customerId'
 import axiosInstance from '../services/axiosInstance'
 import IProject from '../types/project'
 
-import Pagination from './ui/Pagination'
 import Project from './ui/Project'
 import Input from './ui/Input'
 
@@ -22,25 +22,34 @@ const Select = styled.select`
   outline: none;
 `
 
+const BlockOnServer = styled.div`
+  height: 1px;
+`
+
 const Option = styled.option`
   padding: 8px;
 `
 const ProjectsList = () => {
   const [projects, setProjects] = useState<IProject[]>([])
-  const [totalCount, setTotalCount] = useState(0)
   const [page, setPage] = useState(1)
   const [filter, setFilter] = useState('')
   const [search, setSearch] = useState('')
-  const [isPositive, setIsPositive] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   const getProjectsRequest = async (limit: number, offset: number) => {
-    const { data } = await axiosInstance.get(
-      `/projects/?ordering=${filter}&search=${search}&limit=${limit}&offset=${offset}`
-    )
+    try {
+      setLoading(true)
+      const { data } = await axiosInstance.get(
+        `/projects/?ordering=${filter}&search=${search}&limit=${limit}&offset=${offset}`
+      )
 
-    if (data) {
-      setProjects(data.results)
-      setTotalCount(data.count)
+      if (data) {
+        setProjects((prev) => [...prev, ...data.results])
+      }
+    } catch (error) {
+      toast.error('Ошибка поиска')
+    } finally {
+      setLoading(false)
     }
   }
   const handleChangeList = (e: { target: { name: any; value: any } }) => {
@@ -58,13 +67,21 @@ const ProjectsList = () => {
     }
 
     try {
-      const { data } = await axiosInstance.patch(`/projects/${id}/add_freelancer/`, formData)
-
+      await axiosInstance.patch(`/projects/${id}/add_freelancer/`, formData)
       toast.success('Вы откликнулись')
     } catch (error) {
       toast.error('Ошибка отклика на проект')
     }
   }
+  const { ref, inView } = useInView({
+    threshold: 0.1
+  })
+
+  useEffect(() => {
+    if (inView) {
+      setPage((prev) => prev + 1)
+    }
+  }, [inView])
 
   useEffect(() => {
     getProjectsRequest(LIMIT_PROJECTS, (page - 1) * LIMIT_PROJECTS)
@@ -104,11 +121,8 @@ const ProjectsList = () => {
         </div>
       </div>
       <ul className="mx-auto flex w-fit flex-col gap-10">{projectsList}</ul>
-      <Pagination
-        currentPage={page}
-        setPage={setPage}
-        totalPage={Math.ceil(totalCount / LIMIT_PROJECTS)}
-      />
+      {loading && <div>Loading...</div>}
+      {!loading && <BlockOnServer ref={ref} />}
       <Toaster />
     </section>
   )
