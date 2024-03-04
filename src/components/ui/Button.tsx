@@ -1,6 +1,6 @@
 interface ButtonProps {
-  children: string
-  onClick: any
+  children?: string
+  onClick?: any
 }
 
 const Button = (props: ButtonProps) => {
