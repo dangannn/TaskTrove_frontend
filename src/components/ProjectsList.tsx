@@ -35,7 +35,7 @@ const ProjectsList = () => {
   const [filter, setFilter] = useState('')
   const [search, setSearch] = useState('')
   const [loading, setLoading] = useState(true)
-  const [allProjectsRequested, setAllProjectsRequested] = useState(false)
+  const [isAllProjectsRequested, setIsAllProjectsRequested] = useState(false)
 
   const getProjectsRequest = async (limit: number, offset: number) => {
     try {
@@ -47,7 +47,7 @@ const ProjectsList = () => {
       if (data) {
         setProjects((prev) => [...prev, ...data.results])
         if (data.count == projects.length) {
-          setAllProjectsRequested(true)
+          setIsAllProjectsRequested(true)
         }
       }
     } catch (error) {
@@ -126,7 +126,7 @@ const ProjectsList = () => {
       </div>
       <ul className="mx-auto flex w-fit flex-col gap-10">{projectsList}</ul>
       {loading && <div>Loading...</div>}
-      {!loading && !allProjectsRequested && <BlockOnServer ref={ref} />}
+      {!loading && !isAllProjectsRequested && <BlockOnServer ref={ref} />}
       <Toaster />
     </section>
   )

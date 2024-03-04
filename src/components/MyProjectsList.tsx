@@ -4,6 +4,7 @@ import { toast, Toaster } from 'sonner'
 import { PDFDownloadLink } from '@react-pdf/renderer'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import styled from 'styled-components'
+import { useQuery } from 'react-query'
 
 import customerId from '../services/customerId'
 import trashIcon from '../assets/images/trashIcon.svg'
@@ -44,8 +45,6 @@ const InputWrapper = styled.input`
   }
 `
 const MyProjectsList = () => {
-  const [projects, setProjects] = useState<IProject[]>([])
-
   const {
     register,
     getValues,
@@ -55,6 +54,7 @@ const MyProjectsList = () => {
   } = useForm<IProjectForm>({
     defaultValues: {
       customer: customerId,
+      urgency: new Date(0),
       payment: 0
     },
     mode: 'onBlur'
@@ -74,15 +74,12 @@ const MyProjectsList = () => {
     try {
       const { data } = await axiosInstance.get(`/projects/${customerId}/projects/`)
 
-      setProjects(data)
+      return data
     } catch (error) {
       toast.error('Ошибка вывода постов')
     }
   }
-
-  useEffect(() => {
-    getProjects()
-  }, [])
+  const { data: projects, refetch } = useQuery('getProjects', getProjects)
 
   const removeProject = async (id: number, event: any) => {
     event.preventDefault()
@@ -94,36 +91,11 @@ const MyProjectsList = () => {
       await axiosInstance.delete(projectUrl)
 
       toast.success('Проект удален')
+      refetch()
     } catch (error) {
       toast.error('Ошибка удаления проекта')
     }
   }
-  const projectsList = projects
-    ? projects.map((item) => (
-        <>
-          <li className="md:w-3xl mx-auto mb-4 flex items-start justify-between rounded-xl bg-white p-4 drop-shadow-xl sm:mx-auto md:max-w-3xl">
-            <div className="max-w-md">
-              <h3 className="text-xl text-[#4E64F9]">{item?.name}</h3>
-              <span className="text-sm text-[#BDBDBD]">
-                {new Date(item?.pub_date).toLocaleString('ru-RU')}
-              </span>
-              <Link
-                className="ease w-fit border-b-2 text-sm text-[#BDBDBD] duration-300 hover:border-b-[#246BFD] hover:text-[#246BFD]"
-                to={`/project_details/${item?.id}`}
-              >
-                Подробнее
-              </Link>
-            </div>
-            <button
-              className="ease w-fit rounded-lg duration-300 hover:bg-red-400 active:bg-red-400/60 "
-              onClick={removeProject.bind(null, item?.id)}
-            >
-              <img alt="удалить проект" className="w-8 p-1" src={trashIcon} />
-            </button>
-          </li>
-        </>
-      ))
-    : 'нет проектов'
 
   return (
     <>
@@ -201,7 +173,35 @@ const MyProjectsList = () => {
       </form>
       <ul className="width-full mx-auto flex w-fit flex-col gap-10 ">
         Список моих проектов:
-        {projectsList}
+        {projects
+          ? projects.map((item: IProject) => (
+              <>
+                <li
+                  key={item.id}
+                  className="md:w-3xl mx-auto mb-4 flex items-start justify-between rounded-xl bg-white p-4 drop-shadow-xl sm:mx-auto md:max-w-3xl"
+                >
+                  <div className="max-w-md">
+                    <h3 className="text-xl text-[#4E64F9]">{item?.name}</h3>
+                    <span className="text-sm text-[#BDBDBD]">
+                      {new Date(item?.pub_date).toLocaleString('ru-RU')}
+                    </span>
+                    <Link
+                      className="ease w-fit border-b-2 text-sm text-[#BDBDBD] duration-300 hover:border-b-[#246BFD] hover:text-[#246BFD]"
+                      to={`/project_details/${item?.id}`}
+                    >
+                      Подробнее
+                    </Link>
+                  </div>
+                  <button
+                    className="ease w-fit rounded-lg duration-300 hover:bg-red-400 active:bg-red-400/60 "
+                    onClick={removeProject.bind(null, item?.id)}
+                  >
+                    <img alt="удалить проект" className="w-8 p-1" src={trashIcon} />
+                  </button>
+                </li>
+              </>
+            ))
+          : 'нет проектов'}
       </ul>
       <Toaster />
       );
