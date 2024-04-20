@@ -127,8 +127,7 @@ export const router = createBrowserRouter([
 
 const setAuthToken = (token: string) => {
   if (token) {
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-    axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`
+    axiosInstance.defaults.headers.common['Authorization'] = `${token}`
   } else delete axiosInstance.defaults.headers.common['Authorization']
 }
 

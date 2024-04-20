@@ -2,27 +2,59 @@ import { useState } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import { toast, Toaster } from 'sonner'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import styled from 'styled-components'
 
 import axiosInstance from '../../services/axiosInstance'
 
-import Input from './Input'
+interface IAuthForm {
+  username: string
+  password: string
+}
+
+const InputWrapper = styled.input`
+  color: var(--text-primary);
+  display: flex;
+  padding: 0.75rem;
+  margin-top: 0.5rem;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.75rem;
+  border-width: 1px;
+  border-color: #e5e7eb;
+  outline-style: none;
+  width: 100%;
+  height: 3rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  transition-duration: 300ms;
+  transition-timing-function: linear;
+
+  &:focus {
+    border-color: var(--blue);
+  }
+`
 
 const FormComponent = () => {
-  const [formData, setFormData] = useState({
-    username: '',
-    password: ''
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+    reset
+  } = useForm<IAuthForm>({
+    mode: 'onBlur'
   })
 
   const [warningMessage, setWarningMessage] = useState('')
 
-  const handleChange = (e: { target: { name: any; value: any } }) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
-  }
-
   const setAuthToken = (token: string) => {
     if (token) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-    } else delete axios.defaults.headers.common['Authorization']
+      axios.defaults.headers.common['Authorization'] = `${token}`
+      axiosInstance.defaults.headers.common['Authorization'] = `${token}`
+    } else {
+      delete axios.defaults.headers.common['Authorization']
+      delete axiosInstance.defaults.headers.common['Authorization']
+    }
   }
 
   const token = localStorage.getItem('token')
@@ -31,22 +63,23 @@ const FormComponent = () => {
     setAuthToken(token)
   }
 
-  const handleSubmit = async (e: { preventDefault: () => void }) => {
-    e.preventDefault()
-
+  const sendRequest: SubmitHandler<IAuthForm> = async (data) => {
     try {
-      const { data } = await axiosInstance.post('/token/', formData)
-      const token = data.access
-      // const { refresh } = data
+      const { headers } = await axiosInstance.post('/token/', data)
+
+      console.log(headers)
+      console.log(headers['Authorization'])
+      const token = headers.Authorization
+
+      console.log('токен', token)
 
       //set JWT token to local
-      localStorage.setItem('token', data.access)
-      // localStorage.setItem('refresh', refresh)
+      localStorage.setItem('token', token)
 
       //set token to axios common header
       setAuthToken(token)
       //redirect user to home page
-      window.location.href = '/projects'
+      // window.location.href = '/'
     } catch (error) {
       toast.error(`Ошибка авторизации:${error}`)
     }
@@ -56,28 +89,36 @@ const FormComponent = () => {
     <section className="grid min-h-screen place-content-center">
       <form
         className="drop-shadow-3xl mx-auto flex flex-col gap-1 rounded-xl bg-white p-4 sm:max-w-sm md:max-w-3xl md:p-10"
-        onSubmit={handleSubmit}
+        onSubmit={handleSubmit(sendRequest)}
       >
         <fieldset className="mx-auto font-bold ">Авторизация</fieldset>
         <label className="" htmlFor="username">
           Логин:
         </label>
-        <Input
+        <InputWrapper
           id="username"
-          name="username"
           type="text"
-          value={formData.username}
-          onChange={handleChange}
+          {...register('username', {
+            required: 'Обязательное поле',
+            minLength: {
+              value: 1,
+              message: 'Нужно больше символов'
+            }
+          })}
         />
         <label className="" htmlFor="password">
           Пароль:
         </label>
-        <Input
+        <InputWrapper
           id="password"
-          name="password"
           type="password"
-          value={formData.password}
-          onChange={handleChange}
+          {...register('password', {
+            required: 'Обязательное поле',
+            minLength: {
+              value: 1,
+              message: 'Нужно больше символов'
+            }
+          })}
         />
         <Link className="" to="/register">
           Создать аккаунт?
