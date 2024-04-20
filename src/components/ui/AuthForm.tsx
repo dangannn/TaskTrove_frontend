@@ -48,7 +48,7 @@ const FormComponent = () => {
   const [warningMessage, setWarningMessage] = useState('')
 
   const setAuthToken = (token: string) => {
-    if (token) {
+    if (token.length > 0) {
       axios.defaults.headers.common['Authorization'] = `${token}`
       axiosInstance.defaults.headers.common['Authorization'] = `${token}`
     } else {
@@ -67,19 +67,15 @@ const FormComponent = () => {
     try {
       const { headers } = await axiosInstance.post('/token/', data)
 
-      console.log(headers)
-      console.log(headers['Authorization'])
-      const token = headers.Authorization
+      const token = headers['authorization']
 
-      console.log('токен', token)
-
-      //set JWT token to local
+      // set JWT token to localnpm run de
       localStorage.setItem('token', token)
 
-      //set token to axios common header
+      // set token to axios common header
       setAuthToken(token)
-      //redirect user to home page
-      // window.location.href = '/'
+      // redirect user to home page
+      window.location.href = '/'
     } catch (error) {
       toast.error(`Ошибка авторизации:${error}`)
     }
