@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react'
-import axios from 'axios'
+import { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
 
-import customerId from '../services/customerId'
 import removeIcon from '../assets/images/remove-icon.svg'
 import axiosInstance from '../services/axiosInstance'
 import Freelancer from '../types/freelancer'
+import { AuthContext } from '../services/Providers/AuthProvider'
 
 const FavoriteList = () => {
+  const { customerId } = useContext(AuthContext)
   const [favoriteList, setFavoriteList] = useState<Freelancer[]>([])
   const removeFromFavoriteList = async (id: number, event: any) => {
     event.preventDefault()

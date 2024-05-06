@@ -1,15 +1,17 @@
 import { Navigate } from 'react-router-dom'
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 
-import isAuth from '../../services/isAuth'
 import { AUTH_ROUTE } from '../../services/routes'
+import { AuthContext } from '../../services/Providers/AuthProvider'
 
 interface PrivateRouteProps {
   children: React.ReactNode
 }
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
-  return <>{isAuth() ? children : <Navigate to={AUTH_ROUTE} />}</>
+  const { isAuth } = useContext(AuthContext)
+
+  return <>{isAuth ? children : <Navigate to={AUTH_ROUTE} />}</>
 }
 
 export default PrivateRoute

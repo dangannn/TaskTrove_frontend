@@ -1,18 +1,19 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { toast } from 'sonner'
 
-import customerId from '../services/customerId'
 import smileIcon from '../assets/images/smile.svg'
 import sadIcon from '../assets/images/sad.svg'
 import Freelancer from '../types/freelancer'
 import Comment from '../types/comment'
 import axiosInstance from '../services/axiosInstance'
+import { AuthContext } from '../services/Providers/AuthProvider'
 
 import Button from './ui/Button'
 import Input from './ui/Input'
 
 const FreelancerProfile = () => {
+  const { customerId } = useContext(AuthContext)
   const [freelancer, setFreelancer] = useState<Freelancer>()
   const [comments, setComments] = useState<Comment[]>([])
   const { id } = useParams()

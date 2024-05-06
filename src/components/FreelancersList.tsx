@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
+import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
 
-import customerId from '../services/customerId'
 import addIcon from '../assets/images/add-icon.svg'
 import axiosInstance from '../services/axiosInstance'
 import Freelancer from '../types/freelancer'
+import { AuthContext } from '../services/Providers/AuthProvider'
 
 import Pagination from './ui/Pagination'
 
@@ -16,7 +15,7 @@ const FreelancersList = () => {
   const [freelancers, setFreelancers] = useState<Freelancer[]>([])
   const [totalCount, setTotalCount] = useState(0)
   const [page, setPage] = useState(1)
-
+  const { customerId } = useContext(AuthContext)
   const getFreelancersRequest = async (limit: number, offset: number) => {
     const { data } = await axiosInstance.get(`/freelancers/?limit=${limit}&offset=${offset}`)
 

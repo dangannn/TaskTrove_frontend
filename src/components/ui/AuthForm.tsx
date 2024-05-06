@@ -1,11 +1,11 @@
-import { useState } from 'react'
-import axios from 'axios'
-import { Link } from 'react-router-dom'
+import React, { useContext, useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { toast, Toaster } from 'sonner'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import styled from 'styled-components'
 
 import axiosInstance from '../../services/axiosInstance'
+import { AuthContext } from '../../services/Providers/AuthProvider'
 
 interface IAuthForm {
   username: string
@@ -35,7 +35,7 @@ const InputWrapper = styled.input`
   }
 `
 
-const FormComponent = () => {
+const FormComponent: React.FC = () => {
   const {
     register,
     handleSubmit,
@@ -46,38 +46,30 @@ const FormComponent = () => {
   })
 
   const [warningMessage, setWarningMessage] = useState('')
+  const navigate = useNavigate()
+  const { setIsAuth, extractUserIdFromToken } = useContext(AuthContext)
 
-  const setAuthToken = (token: string) => {
-    if (token.length > 0) {
-      axios.defaults.headers.common['Authorization'] = `${token}`
-      axiosInstance.defaults.headers.common['Authorization'] = `${token}`
-    } else {
-      delete axios.defaults.headers.common['Authorization']
-      delete axiosInstance.defaults.headers.common['Authorization']
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      setIsAuth(true)
+      extractUserIdFromToken()
+      navigate('/')
     }
-  }
-
-  const token = localStorage.getItem('token')
-
-  if (token) {
-    setAuthToken(token)
-  }
+  }, [])
 
   const sendRequest: SubmitHandler<IAuthForm> = async (data) => {
     try {
       const { headers } = await axiosInstance.post('/token/', data)
-
       const token = headers['authorization']
 
-      // set JWT token to localnpm run de
       localStorage.setItem('token', token)
-
-      // set token to axios common header
-      setAuthToken(token)
-      // redirect user to home page
-      window.location.href = '/'
+      if (localStorage.getItem('token')) {
+        setIsAuth(true)
+        extractUserIdFromToken()
+        navigate('/')
+      }
     } catch (error) {
-      toast.error(`Ошибка авторизации:${error}`)
+      toast.error(`Ошибка авторизации: ${error}`)
     }
   }
 
