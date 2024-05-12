@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { toast, Toaster } from 'sonner'
 import { useInView } from 'react-intersection-observer'
 
-import customerId from '../services/customerId'
 import axiosInstance from '../services/axiosInstance'
 import IProject from '../types/project'
+import { AuthContext } from '../services/Providers/AuthProvider'
 
 import Project from './ui/Project'
 import Input from './ui/Input'
@@ -30,6 +30,7 @@ const Option = styled.option`
   padding: 8px;
 `
 const ProjectsList = () => {
+  const { customerId } = useContext(AuthContext)
   const [projects, setProjects] = useState<IProject[]>([])
   const [page, setPage] = useState(1)
   const [filter, setFilter] = useState('')

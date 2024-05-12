@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react'
-import axios from 'axios'
+import { useContext, useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
-import customerId from '../services/customerId'
 import User from '../types/user'
 import axiosInstance from '../services/axiosInstance'
+import { AuthContext } from '../services/Providers/AuthProvider'
 
 const CustomerProfile = () => {
+  const { customerId } = useContext(AuthContext)
   const [customer, setCustomer] = useState<User>()
   const requestTmpFreelancers = `/users/${customerId}/`
 

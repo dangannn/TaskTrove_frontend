@@ -1,5 +1,5 @@
-import { Link, Outlet } from 'react-router-dom'
-import { useState } from 'react'
+import { Link, Outlet, useNavigate } from 'react-router-dom'
+import { useContext, useState } from 'react'
 import styled from 'styled-components'
 
 import logoutImg from '../../assets/images/logout.svg'
@@ -17,6 +17,7 @@ import {
   PROJECTS_ROUTE,
   ROOT_ROUTE
 } from '../../services/routes'
+import { AuthContext } from '../../services/Providers/AuthProvider'
 
 const HeaderWrapper = styled.header`
   background-color: var(--blue);
@@ -121,6 +122,8 @@ type Theme = 'dark' | 'light'
 const Header = () => {
   const [burgerMenuActive, setBurgerMenuActive] = useState(false)
   const [currentTheme, setCurrentTheme] = useState<Theme>('light')
+  const navigate = useNavigate()
+  const { setIsAuth } = useContext(AuthContext)
 
   const changeTheme = () => {
     const newTheme = currentTheme === 'dark' ? 'light' : 'dark'
@@ -136,8 +139,8 @@ const Header = () => {
     e.preventDefault()
     e.stopPropagation()
     localStorage.removeItem('token')
-    localStorage.removeItem('refresh')
-    window.location.href = '/auth'
+    setIsAuth(false)
+    navigate('/auth')
   }
 
   return (

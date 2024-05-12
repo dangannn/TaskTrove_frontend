@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { toast, Toaster } from 'sonner'
 import { PDFDownloadLink } from '@react-pdf/renderer'
@@ -6,10 +6,10 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import { useQuery } from 'react-query'
 
-import customerId from '../services/customerId'
 import trashIcon from '../assets/images/trashIcon.svg'
 import IProject from '../types/project'
 import axiosInstance from '../services/axiosInstance'
+import { AuthContext } from '../services/Providers/AuthProvider'
 
 import ProjectPdf from './ui/ProjectPdf'
 import SubmitButton from './ui/SubmitButton'
@@ -45,6 +45,7 @@ const InputWrapper = styled.input`
   }
 `
 const MyProjectsList = () => {
+  const { customerId } = useContext(AuthContext)
   const {
     register,
     getValues,

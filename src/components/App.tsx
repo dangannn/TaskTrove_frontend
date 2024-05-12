@@ -1,7 +1,5 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import axios from 'axios'
 
-import axiosInstance from '../services/axiosInstance'
 import {
   AUTH_ROUTE,
   CUSTOMER_PROFILE_ROUTE,
@@ -124,19 +122,6 @@ export const router = createBrowserRouter([
     element: <RegisterForm />
   }
 ])
-
-const setAuthToken = (token: string) => {
-  if (token) {
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-    axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`
-  } else delete axiosInstance.defaults.headers.common['Authorization']
-}
-
-const token = localStorage.getItem('token')
-
-if (token) {
-  setAuthToken(token)
-}
 
 function App() {
   return (

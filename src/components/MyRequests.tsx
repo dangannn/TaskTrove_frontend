@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
+import React, { useContext, useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
-import customerId from '../services/customerId'
 import IProject from '../types/project'
 import axiosInstance from '../services/axiosInstance'
+import { AuthContext } from '../services/Providers/AuthProvider'
 
 const MyRequests = () => {
+  const { customerId } = useContext(AuthContext)
   const [requests, setRequests] = useState<IProject[]>()
 
   const declineRequest = async (
