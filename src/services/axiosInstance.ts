@@ -42,6 +42,8 @@ axiosInstance.interceptors.response.use(
       } catch (e) {
         console.log(e)
       }
+
+      return axios(originalRequest)
     }
     if (error.response.status === 500) {
       localStorage.setItem('token', '')
