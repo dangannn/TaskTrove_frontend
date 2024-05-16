@@ -1,7 +1,6 @@
-import React from 'react'
-import styled from 'styled-components'
-
-import IProject from '../../types/project'
+import React, { FC } from 'react'
+import IProject from '../../../types/project'
+import { ProjectWrapper } from '../../../global-styles'
 
 interface IProjectProps {
   project: IProject | undefined
@@ -9,24 +8,12 @@ interface IProjectProps {
   children?: any | undefined
 }
 
-const ProjectWrapper = styled.div`
-  padding: 1rem;
-  margin-bottom: 1rem;
-  border-radius: 0.75rem;
-  background-color: var(--bg-card-primary);
-
-  @media (min-width: 640px) {
-  }
-  @media (min-width: 768px) {
-    max-width: 48rem;
-  }
-`
-const Project = ({ project, children }: IProjectProps) => {
+export const Project: FC<IProjectProps> = ({ project, children }) => {
   return (
     <>
       <ProjectWrapper key={project?.id}>
         <h3 className="text-xl">{project?.name}</h3>
-        <span className="text-sm">{new Date(project?.pub_date || '').toLocaleString('ru-RU')}</span>
+        <span className="text-sm">{new Date(project?.pub_date ?? '').toLocaleString('ru-RU')}</span>
         <p className="text-base">
           <span className="font-bold">Оплата: </span>
           {project?.payment} р
@@ -44,5 +31,3 @@ const Project = ({ project, children }: IProjectProps) => {
     </>
   )
 }
-
-export default Project

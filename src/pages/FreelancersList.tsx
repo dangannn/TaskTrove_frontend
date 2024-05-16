@@ -7,7 +7,7 @@ import axiosInstance from '../services/axiosInstance'
 import Freelancer from '../types/freelancer'
 import { AuthContext } from '../services/Providers/AuthProvider'
 
-import Pagination from './ui/Pagination'
+import Pagination from '../components/ui/Pagination'
 
 const LIMIT_FREELANCERS = 3
 

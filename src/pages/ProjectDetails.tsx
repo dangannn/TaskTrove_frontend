@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import axios from 'axios'
 import { toast, Toaster } from 'sonner'
 
 import Freelancer from '../types/freelancer'
 import axiosInstance from '../services/axiosInstance'
 import IProject from '../types/project'
 
-import Project from './ui/Project'
+import { Project } from '../components/ui/Project/Project'
 
 const ProjectDetails = () => {
   const [freelancers, setFreelancers] = useState<Freelancer[]>([])
