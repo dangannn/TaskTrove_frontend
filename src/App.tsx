@@ -12,22 +12,22 @@ import {
   PROJECTS_ROUTE,
   REGISTER_ROUTE,
   ROOT_ROUTE
-} from '../services/routes'
+} from './services/routes'
 
-import AuthForm from './ui/AuthForm'
-import ProjectsList from './ProjectsList'
-import Header from './ui/Header'
-import RegisterForm from './RegisterForm'
-import FreelancersList from './FreelancersList'
-import Home from './Home'
-import FreelancerProfile from './FreelancerProfile'
-import CustomerProfile from './CustomerProfile'
-import FavoriteList from './Favorite_list'
-import MyProjectsList from './MyProjectsList'
-import ProjectDetails from './ProjectDetails'
-import MyRequests from './MyRequests'
-import PrivateRoute from './ui/PrivateRoute'
-import ErrorPage from './ui/ErrorPage'
+import AuthForm from './components/ui/AuthForm/AuthForm'
+import ProjectsList from './pages/ProjectsList'
+import Header from './components/ui/Header'
+import RegisterForm from './pages/RegisterForm'
+import FreelancersList from './pages/FreelancersList'
+import Index from './pages/Home'
+import FreelancerProfile from './pages/FreelancerProfile'
+import CustomerProfile from './pages/CustomerProfile'
+import FavoriteList from './pages/Favorite_list'
+import MyProjectsList from './pages/MyProjectsList'
+import ProjectDetails from './pages/ProjectDetails'
+import MyRequests from './pages/MyRequests'
+import PrivateRoute from './components/ui/PrivateRoute'
+import ErrorPage from './components/ui/ErrorPage'
 
 export const router = createBrowserRouter([
   {
@@ -43,7 +43,7 @@ export const router = createBrowserRouter([
         path: ROOT_ROUTE,
         element: (
           <PrivateRoute>
-            <Home />
+            <Index />
           </PrivateRoute>
         )
       },

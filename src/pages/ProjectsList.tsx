@@ -7,8 +7,8 @@ import axiosInstance from '../services/axiosInstance'
 import IProject from '../types/project'
 import { AuthContext } from '../services/Providers/AuthProvider'
 
-import Project from './ui/Project'
-import Input from './ui/Input'
+import { Project } from '../components/ui/Project/Project'
+import Input from '../components/ui/Input'
 
 const LIMIT_PROJECTS = 3
 
@@ -47,7 +47,7 @@ const ProjectsList = () => {
 
       if (data) {
         setProjects((prev) => [...prev, ...data.results])
-        if (data.count == projects.length) {
+        if (data.count === projects.length) {
           setIsAllProjectsRequested(true)
         }
       }

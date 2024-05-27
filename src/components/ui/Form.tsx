@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { toast, Toaster } from 'sonner'
 
 import axiosInstance from '../../services/axiosInstance'
 
@@ -16,7 +15,7 @@ const FormComponent = () => {
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault()
     try {
-      const { data } = await axiosInstance.post('/projects/', formData)
+      await axiosInstance.post('/projects/', formData)
     } catch (error) {
       console.error(error)
     }

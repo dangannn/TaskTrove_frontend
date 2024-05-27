@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import { AUTH_ROUTE } from '../services/routes'
 import axiosInstance from '../services/axiosInstance'
 
-import SubmitButton from './ui/SubmitButton'
+import SubmitButton from '../components/ui/SubmitButton'
 
 const RegisterFormWrapper = styled.form`
   display: flex;
@@ -68,7 +68,7 @@ interface IRegisterForm {
   username: string
   email: string
   password: string
-  groups: Array<string>
+  groups: string[]
 }
 
 const FormComponent = () => {
@@ -87,7 +87,7 @@ const FormComponent = () => {
   const [warningMessage, setWarningMessage] = useState('')
 
   const saveElement: SubmitHandler<IRegisterForm> = async (data) => {
-    data['groups'] = [...data.groups]
+    data.groups = [...data.groups]
 
     try {
       await axiosInstance.post('/users/', data)

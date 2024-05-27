@@ -11,8 +11,8 @@ import IProject from '../types/project'
 import axiosInstance from '../services/axiosInstance'
 import { AuthContext } from '../services/Providers/AuthProvider'
 
-import ProjectPdf from './ui/ProjectPdf'
-import SubmitButton from './ui/SubmitButton'
+import ProjectPdf from '../components/ui/ProjectPdf'
+import SubmitButton from '../components/ui/SubmitButton'
 
 interface IProjectForm {
   description: string

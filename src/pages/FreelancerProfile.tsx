@@ -9,8 +9,8 @@ import Comment from '../types/comment'
 import axiosInstance from '../services/axiosInstance'
 import { AuthContext } from '../services/Providers/AuthProvider'
 
-import Button from './ui/Button'
-import Input from './ui/Input'
+import Button from '../components/ui/Button'
+import Input from '../components/ui/Input'
 
 const FreelancerProfile = () => {
   const { customerId } = useContext(AuthContext)
@@ -151,9 +151,9 @@ const FreelancerProfile = () => {
           onChange={handleRequestFormChange}
         />
         <Button
-          onClick={(event: any) =>
-            handleSubmit(addRequestUrl, formRequestData, 'Ошибка отправки запроса', event)
-          }
+          onClick={async (event: any) => {
+            await handleSubmit(addRequestUrl, formRequestData, 'Ошибка отправки запроса', event)
+          }}
         >
           Отправить запрос
         </Button>
@@ -207,9 +207,14 @@ const FreelancerProfile = () => {
           </label>
         </div>
         <Button
-          onClick={(event: any) =>
-            handleSubmit(addCommentUrl, formCommentData, 'Ошибка добавления комментария', event)
-          }
+          onClick={async (event: any) => {
+            await handleSubmit(
+              addCommentUrl,
+              formCommentData,
+              'Ошибка добавления комментария',
+              event
+            )
+          }}
         >
           Добавить комментарий
         </Button>

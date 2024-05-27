@@ -14,9 +14,11 @@ const Pagination = ({ setPage, currentPage, totalPage }: IPaginationProps) => {
     <div className="mx-auto flex w-fit">
       <button
         className={`ease w-fit rounded-lg duration-300 hover:bg-blue-200 active:bg-blue-200/60 ${
-          currentPage == 1 ? 'invisible' : ''
+          currentPage === 1 ? 'invisible' : ''
         }`}
-        onClick={() => setPage((prev) => prev - 1)}
+        onClick={() => {
+          setPage((prev) => prev - 1)
+        }}
       >
         <img
           alt="следующая странциа"
@@ -28,7 +30,9 @@ const Pagination = ({ setPage, currentPage, totalPage }: IPaginationProps) => {
         className={`ease w-fit rounded-lg duration-300 hover:bg-blue-200 active:bg-blue-200/60 ${
           totalPage === currentPage ? 'invisible' : ''
         }`}
-        onClick={() => setPage((prev) => prev + 1)}
+        onClick={() => {
+          setPage((prev) => prev + 1)
+        }}
       >
         <img
           alt="следующая странциа"

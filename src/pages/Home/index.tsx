@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { toast } from 'sonner'
 
-import axiosInstance from '../services/axiosInstance'
-import IProject from '../types/project'
+import axiosInstance from '../../services/axiosInstance'
+import IProject from '../../types/project'
 
-import Project from './ui/Project'
+import { Project } from '../../components/ui/Project/Project'
 
 const Section = styled.section`
   max-width: 64rem;
@@ -36,7 +36,7 @@ const List = styled.ul`
     flex-direction: column;
   }
 `
-const Home = () => {
+const Index = () => {
   const [bestWeekProjects, setBestWeekProjects] = useState<IProject[]>([])
   const [bestYearProjects, setBestYearProjects] = useState<IProject[]>([])
 
@@ -85,4 +85,4 @@ const Home = () => {
   )
 }
 
-export default Home
+export default Index

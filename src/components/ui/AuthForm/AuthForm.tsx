@@ -4,8 +4,8 @@ import { toast, Toaster } from 'sonner'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import styled from 'styled-components'
 
-import axiosInstance from '../../services/axiosInstance'
-import { AuthContext } from '../../services/Providers/AuthProvider'
+import axiosInstance from '../../../services/axiosInstance'
+import { AuthContext } from '../../../services/Providers/AuthProvider'
 
 interface IAuthForm {
   username: string
@@ -35,7 +35,11 @@ const InputWrapper = styled.input`
   }
 `
 
-const FormComponent: React.FC = () => {
+const ErrorMessage = styled.span`
+  color: var(--text-error);
+`
+
+const AuthForm: React.FC = () => {
   const {
     register,
     handleSubmit,
@@ -60,7 +64,7 @@ const FormComponent: React.FC = () => {
   const sendRequest: SubmitHandler<IAuthForm> = async (data) => {
     try {
       const { headers } = await axiosInstance.post('/token/', data)
-      const token = headers['authorization']
+      const token = headers.authorization
 
       localStorage.setItem('token', token)
       if (localStorage.getItem('token')) {
@@ -85,6 +89,7 @@ const FormComponent: React.FC = () => {
         </label>
         <InputWrapper
           id="username"
+          data-testid={'username'}
           type="text"
           {...register('username', {
             required: 'Обязательное поле',
@@ -94,12 +99,16 @@ const FormComponent: React.FC = () => {
             }
           })}
         />
+        <ErrorMessage data-testid={'username_error'} id="username_error">
+          {errors.username?.message ?? ''}
+        </ErrorMessage>
         <label className="" htmlFor="password">
           Пароль:
         </label>
         <InputWrapper
           id="password"
           type="password"
+          data-testid={'password'}
           {...register('password', {
             required: 'Обязательное поле',
             minLength: {
@@ -108,6 +117,7 @@ const FormComponent: React.FC = () => {
             }
           })}
         />
+        <ErrorMessage id="password_error">{errors.password?.message}</ErrorMessage>
         <Link className="" to="/register">
           Создать аккаунт?
         </Link>
@@ -117,11 +127,13 @@ const FormComponent: React.FC = () => {
         >
           Авторизоваться
         </button>
-        <span className="max-w-sm text-red-600">{warningMessage}</span>
+        <span id="auth_warning_message" className="max-w-sm text-red-600">
+          {warningMessage}
+        </span>
       </form>
       <Toaster />
     </section>
   )
 }
 
-export default FormComponent
+export default AuthForm
